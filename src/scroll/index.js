@@ -50,6 +50,9 @@ export async function initScroll(prefersReduced) {
     activeSection: 'hero',
   };
 
+  // Expose lenis globally so palette & other modules can call .scrollTo
+  window.__lenis = lenis;
+
   // ─── Per-section tint triggers ─────────────────────────────────────────────
   const sections = document.querySelectorAll('.section-wrap, [data-slide-index]');
 

@@ -80,15 +80,16 @@
          A. HERO
     ═══════════════════════════════════════════════════════ -->
     <section id="hero" class="section-wrap" aria-labelledby="hero-name">
-      <!-- 3D anchor: sun disc sits here -->
-      <div class="anchor" data-anchor="sun" data-object="sun" aria-hidden="true">
-        <!-- CSS fallback -->
+      <!-- Sun object slot (right-side, behind text) -->
+      <div class="skill-object-wrap" style="position:absolute; inset:0; pointer-events:none; z-index:1; min-height:unset; cursor:default;" aria-hidden="true">
+        <div class="anchor" data-anchor="sun" data-object="sun" style="position:relative; width:100%; height:100%;"></div>
         <div class="object-fallback" aria-hidden="true">
-          <div class="fallback-disc" style="--disc-color:#f5c5a3; width:50vmin; height:50vmin;"></div>
+          <img src="/fallback/sun.png" alt="" style="position:absolute; right:5vw; top:10vh; width:38vmin; height:38vmin; object-fit: contain;">
         </div>
       </div>
 
-      <div style="position:relative; z-index:2; max-width:1100px; margin:0 auto; padding:0 2rem;">
+      <!-- Text content above the sun -->
+      <div class="hero-text-wrap" style="position:relative; z-index:2; max-width:1100px; margin:0 auto; padding:0 2rem;">
         <!-- Mono label -->
         <p class="label-mono" style="margin-bottom:1.5rem;">// Jaipur, Rajasthan, India</p>
 
@@ -101,7 +102,7 @@
           Backend Engineer – GenAI &amp; Agentic AI
         </p>
 
-        <!-- Hero statement (original connective copy) -->
+        <!-- Hero statement -->
         <p class="hero-statement" style="font-family:var(--font-display); font-size:clamp(1.1rem,2vw,1.5rem); font-weight:300; color:var(--color-ink-secondary); max-width:640px; line-height:1.55; margin:0 0 3rem;">
           Systems that hold under load,<br>
           agents that reason through uncertainty,<br>
@@ -116,6 +117,7 @@
         </div>
       </div>
     </section>
+
 
     <!-- ═══════════════════════════════════════════════════════
          C. PROFESSIONAL SUMMARY
@@ -140,8 +142,8 @@
           <div class="skill-object-wrap" aria-hidden="true">
             <div class="anchor" data-anchor="gen-ai" data-object="rag-cloud"></div>
             <div class="object-fallback" aria-hidden="true">
-              <div class="fallback-disc" style="--disc-color:var(--color-lavender); width:40vmin; height:40vmin;"></div>
-            </div>
+          <img src="/fallback/rag-cloud.png" alt="" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15)); max-width: 80vmin;" loading="lazy">
+        </div>
           </div>
           <div class="skill-content">
             <div class="ghost-numeral" aria-hidden="true">01</div>
@@ -167,8 +169,8 @@
           <div class="skill-object-wrap" aria-hidden="true">
             <div class="anchor" data-anchor="agentic-ai" data-object="constellation"></div>
             <div class="object-fallback" aria-hidden="true">
-              <div class="fallback-disc" style="--disc-color:var(--color-ochre); width:40vmin; height:40vmin;"></div>
-            </div>
+          <img src="/fallback/constellation.png" alt="" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15)); max-width: 80vmin;" loading="lazy">
+        </div>
           </div>
           <div class="skill-content">
             <div class="ghost-numeral" aria-hidden="true">02</div>
@@ -194,8 +196,8 @@
           <div class="skill-object-wrap" aria-hidden="true">
             <div class="anchor" data-anchor="languages" data-object="planet-moons"></div>
             <div class="object-fallback" aria-hidden="true">
-              <div class="fallback-disc" style="--disc-color:var(--color-sage); width:40vmin; height:40vmin;"></div>
-            </div>
+          <img src="/fallback/planet-moons.png" alt="" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15)); max-width: 80vmin;" loading="lazy">
+        </div>
           </div>
           <div class="skill-content">
             <div class="ghost-numeral" aria-hidden="true">03</div>
@@ -218,8 +220,8 @@
           <div class="skill-object-wrap" aria-hidden="true">
             <div class="anchor" data-anchor="backend" data-object="ringed-planet"></div>
             <div class="object-fallback" aria-hidden="true">
-              <div class="fallback-disc" style="--disc-color:var(--color-terracotta); width:40vmin; height:40vmin;"></div>
-            </div>
+          <img src="/fallback/ringed-planet.png" alt="" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15)); max-width: 80vmin;" loading="lazy">
+        </div>
           </div>
           <div class="skill-content">
             <div class="ghost-numeral" aria-hidden="true">04</div>
@@ -246,8 +248,8 @@
           <div class="skill-object-wrap" aria-hidden="true">
             <div class="anchor" data-anchor="databases" data-object="strata-planet"></div>
             <div class="object-fallback" aria-hidden="true">
-              <div class="fallback-disc" style="--disc-color:var(--color-deep-teal); width:40vmin; height:40vmin;"></div>
-            </div>
+          <img src="/fallback/strata-planet.png" alt="" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15)); max-width: 80vmin;" loading="lazy">
+        </div>
           </div>
           <div class="skill-content">
             <div class="ghost-numeral" aria-hidden="true">05</div>
@@ -271,8 +273,8 @@
           <div class="skill-object-wrap" aria-hidden="true">
             <div class="anchor" data-anchor="devops" data-object="satellite"></div>
             <div class="object-fallback" aria-hidden="true">
-              <div class="fallback-disc" style="--disc-color:var(--color-slate-blue); width:40vmin; height:40vmin;"></div>
-            </div>
+          <img src="/fallback/satellite.png" alt="" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15)); max-width: 80vmin;" loading="lazy">
+        </div>
           </div>
           <div class="skill-content">
             <div class="ghost-numeral" aria-hidden="true">06</div>
@@ -299,8 +301,8 @@
           <div class="skill-object-wrap" aria-hidden="true">
             <div class="anchor" data-anchor="payments" data-object="orbit-planet"></div>
             <div class="object-fallback" aria-hidden="true">
-              <div class="fallback-disc" style="--disc-color:var(--color-dusty-rose); width:40vmin; height:40vmin;"></div>
-            </div>
+          <img src="/fallback/orbit-planet.png" alt="" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15)); max-width: 80vmin;" loading="lazy">
+        </div>
           </div>
           <div class="skill-content">
             <div class="ghost-numeral" aria-hidden="true">07</div>
@@ -326,8 +328,8 @@
           <div class="skill-object-wrap" aria-hidden="true">
             <div class="anchor" data-anchor="concepts" data-object="hash-ring"></div>
             <div class="object-fallback" aria-hidden="true">
-              <div class="fallback-disc" style="--disc-color:var(--color-plum-planet); width:40vmin; height:40vmin;"></div>
-            </div>
+          <img src="/fallback/hash-ring.png" alt="" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15)); max-width: 80vmin;" loading="lazy">
+        </div>
           </div>
           <div class="skill-content">
             <div class="ghost-numeral" aria-hidden="true">08</div>
@@ -400,8 +402,8 @@
           <div class="skill-object-wrap" aria-hidden="true" style="align-self:center;">
             <div class="anchor" data-anchor="api-monitor" data-object="flight-route" data-waypoints="fetch,compare,summarize,classify,suggest fix"></div>
             <div class="object-fallback" aria-hidden="true">
-              <div class="fallback-disc" style="--disc-color:var(--color-slate-blue); width:38vmin; height:38vmin;"></div>
-            </div>
+          <img src="/fallback/flight-route.png" alt="" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15)); max-width: 80vmin;" loading="lazy">
+        </div>
           </div>
         </div>
       </article>
@@ -432,8 +434,8 @@
           <div class="skill-object-wrap" aria-hidden="true" style="align-self:center;">
             <div class="anchor" data-anchor="hireflow" data-object="flight-route" data-waypoints="Resumes &amp; job descriptions,Structured requirements &amp; profiles,Requirements matched to quoted evidence,Interview questions"></div>
             <div class="object-fallback" aria-hidden="true">
-              <div class="fallback-disc" style="--disc-color:var(--color-sage); width:38vmin; height:38vmin;"></div>
-            </div>
+          <img src="/fallback/flight-route.png" alt="" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15)); max-width: 80vmin;" loading="lazy">
+        </div>
           </div>
         </div>
       </article>

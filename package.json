@@ -8,7 +8,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "verify:content": "node scripts/verify-content.js"
+    "verify:content": "node scripts/verify-content.js",
+    "test:palette": "playwright test tests/palette.spec.js"
   },
   "repository": {
     "type": "git",
@@ -17,9 +18,10 @@
   "author": "Kuldeep Singh",
   "license": "MIT",
   "devDependencies": {
+    "@playwright/browser-chromium": "^1.50.1",
+    "@playwright/test": "^1.63.0",
     "@tailwindcss/vite": "^4.3.3",
     "playwright": "^1.50.1",
-    "@playwright/browser-chromium": "^1.50.1",
     "vite": "^8.3.1"
   },
   "dependencies": {
