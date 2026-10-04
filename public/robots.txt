@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kuldeep-singh-naruka.netlify.app/sitemap.xml

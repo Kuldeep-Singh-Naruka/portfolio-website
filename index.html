@@ -1,0 +1,622 @@
+<!doctype html>
+<html lang="en" class="custom-cursor">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Kuldeep Singh — Backend Engineer with 4+ years building scalable APIs, LLM-powered agents, and production payment systems.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://kuldeep-singh-naruka.netlify.app/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://kuldeep-singh-naruka.netlify.app/">
+  <meta property="og:title" content="Kuldeep Singh — Backend Engineer, GenAI & Agentic AI">
+  <meta property="og:description" content="Backend Engineer with 4+ years building scalable APIs, LLM-powered agents, and production payment systems.">
+  <meta property="og:image" content="https://kuldeep-singh-naruka.netlify.app/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Kuldeep Singh — Backend Engineer, GenAI & Agentic AI">
+  <meta name="twitter:description" content="Backend Engineer with 4+ years building scalable APIs, LLM-powered agents, and production payment systems.">
+  <meta name="twitter:image" content="https://kuldeep-singh-naruka.netlify.app/og-image.png">
+
+  <title>Kuldeep Singh — Backend Engineer, GenAI & Agentic AI</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+  <!-- JSON-LD Person -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Kuldeep Singh",
+    "jobTitle": "Backend Engineer – GenAI & Agentic AI",
+    "address": { "@type": "PostalAddress", "addressLocality": "Jaipur", "addressRegion": "Rajasthan", "addressCountry": "IN" },
+    "email": "artateight@gmail.com",
+    "url": "https://kuldeep-singh-naruka.netlify.app/",
+    "sameAs": [
+      "https://linkedin.com/in/kuldeep-singh-99b204280",
+      "https://github.com/Kuldeep-Singh-Naruka"
+    ],
+    "knowsAbout": ["Python","FastAPI","LangGraph","LangChain","Node.js","PostgreSQL","MongoDB","AWS","Docker","GenAI","RAG","Agentic AI","REST APIs","Payments"]
+  }
+  </script>
+
+  <link rel="stylesheet" href="/src/styles/main.css">
+</head>
+<body>
+  <!-- Source comment for curious visitors -->
+  <!-- Built by hand. If you're reading this, let's talk. artateight@gmail.com -->
+
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <!-- Fixed tint background (behind canvas) -->
+  <div id="slide-tint" aria-hidden="true"></div>
+
+  <!-- WebGL Canvas (decorative, aria-hidden) -->
+  <canvas id="orrery-canvas" aria-hidden="true"></canvas>
+
+  <!-- Fixed header -->
+  <header id="site-header" role="banner">
+    <a href="#hero" class="wordmark" aria-label="Kuldeep Singh — home">Kuldeep Singh</a>
+    <nav class="header-nav" aria-label="Main navigation">
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#experience">Experience</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="header-controls">
+      <button id="night-toggle" class="icon-btn" aria-label="Toggle night mode" aria-pressed="false">Day</button>
+      <button id="three-toggle" class="icon-btn" aria-label="Toggle 3D scene" aria-pressed="true">3D On</button>
+      <button id="palette-open" class="icon-btn" aria-label="Open command palette" aria-haspopup="dialog"><kbd id="palette-kbd">⌘K</kbd></button>
+    </div>
+  </header>
+
+  <!-- Slide counter (fixed, visible during skills tour) -->
+  <div id="slide-counter" aria-live="polite" aria-atomic="true">01/08</div>
+
+  <!-- Main content -->
+  <main id="main-content">
+
+    <!-- ═══════════════════════════════════════════════════════
+         A. HERO
+    ═══════════════════════════════════════════════════════ -->
+    <section id="hero" class="section-wrap" aria-labelledby="hero-name">
+      <!-- Sun object slot (right-side, behind text) -->
+      <div class="skill-object-wrap" style="position:absolute; inset:0; pointer-events:none; z-index:1; min-height:unset; cursor:default;" aria-hidden="true">
+        <div class="anchor" data-anchor="sun" data-object="sun" style="position:relative; width:100%; height:100%;"></div>
+        <div class="object-fallback" aria-hidden="true">
+          <img src="/fallback/sun.png" alt="" style="position:absolute; right:5vw; top:10vh; width:38vmin; height:38vmin; object-fit: contain;">
+        </div>
+      </div>
+
+      <!-- Text content above the sun -->
+      <div class="hero-text-wrap" style="position:relative; z-index:2; max-width:1100px; margin:0 auto; padding:0 2rem;">
+        <!-- Mono label -->
+        <p class="label-mono" style="margin-bottom:1.5rem;">// Jaipur, Rajasthan, India</p>
+
+        <!-- H1 lockup -->
+        <h1 id="hero-name" class="display-huge" style="margin:0; color:var(--color-ink);" aria-label="Kuldeep Singh">
+          <span class="hero-name-display" aria-hidden="true">Kuldeep Singh</span>
+        </h1>
+
+        <p class="display-large" style="margin:0.5rem 0 1.5rem; color:var(--color-ink-secondary); font-weight:300;">
+          Backend Engineer – GenAI &amp; Agentic AI
+        </p>
+
+        <!-- Hero statement -->
+        <p class="hero-statement" style="font-family:var(--font-display); font-size:clamp(1.1rem,2vw,1.5rem); font-weight:300; color:var(--color-ink-secondary); max-width:640px; line-height:1.55; margin:0 0 3rem;">
+          Systems that hold under load,<br>
+          agents that reason through uncertainty,<br>
+          payments that clear without drama.
+        </p>
+
+        <!-- CTAs -->
+        <div style="display:flex; flex-wrap:wrap; gap:1rem; margin-bottom:4rem;">
+          <a href="#projects" class="cta-primary">View projects</a>
+          <a href="/resume/Kuldeep_Singh_Resume.pdf" class="cta-ghost" download>Download resume</a>
+          <a href="mailto:artateight@gmail.com" class="cta-ghost">Say hello</a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         C. PROFESSIONAL SUMMARY
+    ═══════════════════════════════════════════════════════ -->
+    <section id="summary" class="section-wrap" aria-labelledby="summary-heading">
+      <div style="max-width:900px; margin:0 auto; padding:6rem 2rem;">
+        <h2 id="summary-heading" class="label-mono" style="margin-bottom:2rem;">Professional Summary</h2>
+        <p class="summary-text" id="summary-para">
+          Backend Engineer with 4+ years of experience building scalable REST APIs and backend systems with Python, Node.js, Express.js, PHP, MySQL, PostgreSQL, and MongoDB, now focused on Generative AI and Agentic AI. Builds LLM-powered applications with LangChain and LangGraph: multi-step AI agents, Retrieval-Augmented Generation (RAG), vector search with ChromaDB, structured LLM outputs, and LLM observability with LangSmith, served through FastAPI. Brings production experience from a fantasy sports platform with 200,000+ users, including payment systems (Finix, 3DS2, ACH), webhooks, event-driven processing, idempotent transactions, and fraud prevention that reduced false positives by 30%.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════
+         D. TECHNICAL SKILLS — 8 slides
+    ═══════════════════════════════════════════════════════ -->
+    <section id="skills" aria-label="Technical Skills">
+
+      <!-- Slide 01: Generative AI & LLMs -->
+      <div id="skill-gen-ai" class="skill-slide section-wrap" data-slide-index="01" data-slide-total="08">
+        <div class="skill-sticky" data-tint="#f7f3f0">
+          <div class="skill-object-wrap" aria-hidden="true">
+            <div class="anchor" data-anchor="gen-ai" data-object="rag-cloud"></div>
+            <div class="object-fallback" aria-hidden="true">
+          <img src="/fallback/rag-cloud.png" alt="" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15)); max-width: 80vmin;" loading="lazy">
+        </div>
+          </div>
+          <div class="skill-content">
+            <div class="ghost-numeral" aria-hidden="true">01</div>
+            <p class="label-mono" style="margin-bottom:0.5rem;">// 01 — technical skills</p>
+            <h2 class="display-slide" style="margin:0 0 0.5rem;">Generative AI &amp; LLMs</h2>
+            <p class="label-mono" style="margin-bottom:1.5rem;">orbit: 7 items</p>
+            <ul class="skill-tags" role="list" aria-label="Generative AI & LLMs skills">
+              <li class="skill-tag">LLM Application Development</li>
+              <li class="skill-tag">Prompt Engineering</li>
+              <li class="skill-tag">Retrieval-Augmented Generation (RAG)</li>
+              <li class="skill-tag">Embeddings</li>
+              <li class="skill-tag">Semantic Search</li>
+              <li class="skill-tag">Structured Output Extraction</li>
+              <li class="skill-tag">Grounded Answers with Citations</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 02: Agentic AI -->
+      <div id="skill-agentic-ai" class="skill-slide section-wrap" data-slide-index="02" data-slide-total="08">
+        <div class="skill-sticky" data-tint="#f5eee6">
+          <div class="skill-object-wrap" aria-hidden="true">
+            <div class="anchor" data-anchor="agentic-ai" data-object="constellation"></div>
+            <div class="object-fallback" aria-hidden="true">
+          <img src="/fallback/constellation.png" alt="" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15)); max-width: 80vmin;" loading="lazy">
+        </div>
+          </div>
+          <div class="skill-content">
+            <div class="ghost-numeral" aria-hidden="true">02</div>
+            <p class="label-mono" style="margin-bottom:0.5rem;">// 02 — technical skills</p>
+            <h2 class="display-slide" style="margin:0 0 0.5rem;">Agentic AI</h2>
+            <p class="label-mono" style="margin-bottom:1.5rem;">orbit: 7 nodes</p>
+            <ul class="skill-tags" role="list" aria-label="Agentic AI skills">
+              <li class="skill-tag">AI Agents</li>
+              <li class="skill-tag">Multi-Step Agent Workflows</li>
+              <li class="skill-tag">LangGraph (Stateful Agent Graphs)</li>
+              <li class="skill-tag">LangChain</li>
+              <li class="skill-tag">LangSmith (Tracing &amp; Observability)</li>
+              <li class="skill-tag">Groq</li>
+              <li class="skill-tag">Tavily Search API</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 03: Languages -->
+      <div id="skill-languages" class="skill-slide section-wrap" data-slide-index="03" data-slide-total="08">
+        <div class="skill-sticky" data-tint="#e9e5e4">
+          <div class="skill-object-wrap" aria-hidden="true">
+            <div class="anchor" data-anchor="languages" data-object="planet-moons"></div>
+            <div class="object-fallback" aria-hidden="true">
+          <img src="/fallback/planet-moons.png" alt="" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15)); max-width: 80vmin;" loading="lazy">
+        </div>
+          </div>
+          <div class="skill-content">
+            <div class="ghost-numeral" aria-hidden="true">03</div>
+            <p class="label-mono" style="margin-bottom:0.5rem;">// 03 — technical skills</p>
+            <h2 class="display-slide" style="margin:0 0 0.5rem;">Languages</h2>
+            <p class="label-mono" style="margin-bottom:1.5rem;">orbit: 4 moons</p>
+            <ul class="skill-tags" role="list" aria-label="Programming languages">
+              <li class="skill-tag">Python</li>
+              <li class="skill-tag">JavaScript</li>
+              <li class="skill-tag">SQL</li>
+              <li class="skill-tag">PHP</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 04: Backend -->
+      <div id="skill-backend" class="skill-slide section-wrap" data-slide-index="04" data-slide-total="08">
+        <div class="skill-sticky" data-tint="#ded8da">
+          <div class="skill-object-wrap" aria-hidden="true">
+            <div class="anchor" data-anchor="backend" data-object="ringed-planet"></div>
+            <div class="object-fallback" aria-hidden="true">
+          <img src="/fallback/ringed-planet.png" alt="" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15)); max-width: 80vmin;" loading="lazy">
+        </div>
+          </div>
+          <div class="skill-content">
+            <div class="ghost-numeral" aria-hidden="true">04</div>
+            <p class="label-mono" style="margin-bottom:0.5rem;">// 04 — technical skills</p>
+            <h2 class="display-slide" style="margin:0 0 0.5rem;">Backend</h2>
+            <p class="label-mono" style="margin-bottom:1.5rem;">orbit: 8 satellites</p>
+            <ul class="skill-tags" role="list" aria-label="Backend skills">
+              <li class="skill-tag">FastAPI</li>
+              <li class="skill-tag">Node.js</li>
+              <li class="skill-tag">Express.js</li>
+              <li class="skill-tag">RESTful APIs</li>
+              <li class="skill-tag">Webhooks</li>
+              <li class="skill-tag">Microservices</li>
+              <li class="skill-tag">Event-Driven Architecture</li>
+              <li class="skill-tag">Asynchronous Processing</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 05: Databases -->
+      <div id="skill-databases" class="skill-slide section-wrap" data-slide-index="05" data-slide-total="08">
+        <div class="skill-sticky" data-tint="#d3c8cc">
+          <div class="skill-object-wrap" aria-hidden="true">
+            <div class="anchor" data-anchor="databases" data-object="strata-planet"></div>
+            <div class="object-fallback" aria-hidden="true">
+          <img src="/fallback/strata-planet.png" alt="" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15)); max-width: 80vmin;" loading="lazy">
+        </div>
+          </div>
+          <div class="skill-content">
+            <div class="ghost-numeral" aria-hidden="true">05</div>
+            <p class="label-mono" style="margin-bottom:0.5rem;">// 05 — technical skills</p>
+            <h2 class="display-slide" style="margin:0 0 0.5rem;">Databases</h2>
+            <p class="label-mono" style="margin-bottom:1.5rem;">orbit: 5 strata</p>
+            <ul class="skill-tags" role="list" aria-label="Database technologies">
+              <li class="skill-tag">PostgreSQL</li>
+              <li class="skill-tag">MySQL</li>
+              <li class="skill-tag">MongoDB</li>
+              <li class="skill-tag">Redis</li>
+              <li class="skill-tag">ChromaDB (Vector Database)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 06: DevOps & Tools -->
+      <div id="skill-devops" class="skill-slide section-wrap" data-slide-index="06" data-slide-total="08">
+        <div class="skill-sticky" data-tint="#e9e5e4">
+          <div class="skill-object-wrap" aria-hidden="true">
+            <div class="anchor" data-anchor="devops" data-object="satellite"></div>
+            <div class="object-fallback" aria-hidden="true">
+          <img src="/fallback/satellite.png" alt="" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15)); max-width: 80vmin;" loading="lazy">
+        </div>
+          </div>
+          <div class="skill-content">
+            <div class="ghost-numeral" aria-hidden="true">06</div>
+            <p class="label-mono" style="margin-bottom:0.5rem;">// 06 — technical skills</p>
+            <h2 class="display-slide" style="margin:0 0 0.5rem;">DevOps &amp; Tools</h2>
+            <p class="label-mono" style="margin-bottom:1.5rem;">orbit: 8 modules</p>
+            <ul class="skill-tags" role="list" aria-label="DevOps and tools">
+              <li class="skill-tag">AWS (EC2, S3, RDS, IAM, CloudWatch, Lambda, SQS)</li>
+              <li class="skill-tag">Docker</li>
+              <li class="skill-tag">Docker Compose</li>
+              <li class="skill-tag">CI/CD</li>
+              <li class="skill-tag">GitHub Actions</li>
+              <li class="skill-tag">Git</li>
+              <li class="skill-tag">GitHub</li>
+              <li class="skill-tag">GitLab</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 07: Payments & Integrations -->
+      <div id="skill-payments" class="skill-slide section-wrap" data-slide-index="07" data-slide-total="08">
+        <div class="skill-sticky" data-tint="#f5eee6">
+          <div class="skill-object-wrap" aria-hidden="true">
+            <div class="anchor" data-anchor="payments" data-object="orbit-planet"></div>
+            <div class="object-fallback" aria-hidden="true">
+          <img src="/fallback/orbit-planet.png" alt="" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15)); max-width: 80vmin;" loading="lazy">
+        </div>
+          </div>
+          <div class="skill-content">
+            <div class="ghost-numeral" aria-hidden="true">07</div>
+            <p class="label-mono" style="margin-bottom:0.5rem;">// 07 — technical skills</p>
+            <h2 class="display-slide" style="margin:0 0 0.5rem;">Payments &amp; Integrations</h2>
+            <p class="label-mono" style="margin-bottom:1.5rem;">orbit: 7 packets</p>
+            <ul class="skill-tags" role="list" aria-label="Payments and integrations">
+              <li class="skill-tag">Finix</li>
+              <li class="skill-tag">Evervault</li>
+              <li class="skill-tag">3DS2</li>
+              <li class="skill-tag">ACH</li>
+              <li class="skill-tag">Ethoca</li>
+              <li class="skill-tag">SportsRadar API</li>
+              <li class="skill-tag">RotoWire API</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 08: Concepts -->
+      <div id="skill-concepts" class="skill-slide section-wrap" data-slide-index="08" data-slide-total="08">
+        <div class="skill-sticky" data-tint="#f7f3f0">
+          <div class="skill-object-wrap" aria-hidden="true">
+            <div class="anchor" data-anchor="concepts" data-object="hash-ring"></div>
+            <div class="object-fallback" aria-hidden="true">
+          <img src="/fallback/hash-ring.png" alt="" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15)); max-width: 80vmin;" loading="lazy">
+        </div>
+          </div>
+          <div class="skill-content">
+            <div class="ghost-numeral" aria-hidden="true">08</div>
+            <p class="label-mono" style="margin-bottom:0.5rem;">// 08 — technical skills</p>
+            <h2 class="display-slide" style="margin:0 0 0.5rem;">Concepts</h2>
+            <p class="label-mono" style="margin-bottom:1.5rem;">orbit: 5 nodes</p>
+            <ul class="skill-tags" role="list" aria-label="Engineering concepts">
+              <li class="skill-tag">System Design</li>
+              <li class="skill-tag">Multi-Tenant Architecture</li>
+              <li class="skill-tag">Idempotency</li>
+              <li class="skill-tag">Consistent Hashing</li>
+              <li class="skill-tag">API Performance Optimization</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </section><!-- /skills -->
+
+    <!-- ═══════════════════════════════════════════════════════
+         E. OVERVIEW BEAT
+    ═══════════════════════════════════════════════════════ -->
+    <section id="overview" class="section-wrap" aria-label="Skills overview — full system">
+      <div class="anchor" data-anchor="overview" data-object="orrery-overview" aria-hidden="true"></div>
+      <div style="position:relative; z-index:2; text-align:center; padding:2rem;">
+        <p class="label-mono" style="margin-bottom:1rem;">// full system</p>
+        <h2 class="display-huge" id="overview-word" aria-label="System">SYSTEM</h2>
+        <p style="max-width:480px; margin:1.5rem auto 0; color:var(--color-ink-secondary); font-size:14px; line-height:1.7;">
+          Eight domains, one engineer. Hover any body to navigate.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════
+         F. AI PROJECTS
+    ═══════════════════════════════════════════════════════ -->
+    <section id="projects" class="section-wrap" aria-labelledby="projects-heading">
+      <div style="max-width:1100px; margin:0 auto; padding:6rem 2rem 0;">
+        <p class="label-mono" style="margin-bottom:0.75rem;">// 09 — ai projects</p>
+        <h2 id="projects-heading" class="display-huge" style="margin:0 0 5rem;">AI Projects</h2>
+      </div>
+
+      <!-- Project 1: API Integration Monitor Agent -->
+      <article id="project-api-monitor" class="project-slide" aria-labelledby="proj1-title">
+        <div class="project-sticky">
+          <div class="project-text-col">
+            <p class="label-mono" style="margin-bottom:0.5rem;">01 / Agentic AI</p>
+            <h3 id="proj1-title" style="font-family:var(--font-display); font-size:clamp(1.8rem,3.5vw,3rem); font-weight:300; margin:0 0 0.25rem; line-height:1.15;">API Integration Monitor Agent</h3>
+            <p class="tech-stack">Python · FastAPI · LangGraph · LangChain · PostgreSQL · ChromaDB · LangSmith</p>
+            <a href="https://github.com/Kuldeep-Singh-Naruka/API-Integration-Monitor-Agent" target="_blank" rel="noreferrer" class="ink-link" style="font-size:13px;">View on GitHub ↗</a>
+            <ul style="margin:2rem 0 0; padding-left:0; list-style:none; display:flex; flex-direction:column; gap:1rem;">
+              <li style="display:flex; gap:0.75rem;">
+                <span style="color:var(--color-coral); flex-shrink:0; margin-top:0.1rem;">—</span>
+                <span>Designed and built an autonomous AI agent that monitors third-party API documentation for changes, using a 5-node LangGraph state machine (fetch, compare, summarize, classify, suggest fix).</span>
+              </li>
+              <li style="display:flex; gap:0.75rem;">
+                <span style="color:var(--color-coral); flex-shrink:0; margin-top:0.1rem;">—</span>
+                <span>Used an LLM to classify each change as breaking or non-breaking and to generate suggested code fixes for affected integrations.</span>
+              </li>
+              <li style="display:flex; gap:0.75rem;">
+                <span style="color:var(--color-coral); flex-shrink:0; margin-top:0.1rem;">—</span>
+                <span>Implemented vector search with embeddings in ChromaDB to retrieve relevant documentation context for the LLM (RAG), with PostgreSQL for persistence.</span>
+              </li>
+              <li style="display:flex; gap:0.75rem;">
+                <span style="color:var(--color-coral); flex-shrink:0; margin-top:0.1rem;">—</span>
+                <span>Exposed the agent through FastAPI REST endpoints and added end-to-end tracing of every agent step with LangSmith.</span>
+              </li>
+            </ul>
+          </div>
+          <div class="skill-object-wrap" aria-hidden="true" style="align-self:center;">
+            <div class="anchor" data-anchor="api-monitor" data-object="flight-route" data-waypoints="fetch,compare,summarize,classify,suggest fix"></div>
+            <div class="object-fallback" aria-hidden="true">
+          <img src="/fallback/flight-route.png" alt="" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15)); max-width: 80vmin;" loading="lazy">
+        </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 2: HireFlow -->
+      <article id="project-hireflow" class="project-slide" aria-labelledby="proj2-title">
+        <div class="project-sticky">
+          <div class="project-text-col">
+            <p class="label-mono" style="margin-bottom:0.5rem;">02 / LLM Pipeline</p>
+            <h3 id="proj2-title" style="font-family:var(--font-display); font-size:clamp(1.8rem,3.5vw,3rem); font-weight:300; margin:0 0 0.25rem; line-height:1.15;">HireFlow – AI Candidate Screening &amp; Interview Intelligence</h3>
+            <p class="tech-stack">Python · FastAPI · PostgreSQL · Groq · LangChain · React</p>
+            <a href="https://github.com/Kuldeep-Singh-Naruka/HireFlow" target="_blank" rel="noreferrer" class="ink-link" style="font-size:13px;">View on GitHub ↗</a>
+            <ul style="margin:2rem 0 0; padding-left:0; list-style:none; display:flex; flex-direction:column; gap:1rem;">
+              <li style="display:flex; gap:0.75rem;">
+                <span style="color:var(--color-coral); flex-shrink:0; margin-top:0.1rem;">—</span>
+                <span>Built an LLM pipeline (Groq + LangChain) that extracts structured job requirements and candidate profiles from unstructured resumes and job descriptions.</span>
+              </li>
+              <li style="display:flex; gap:0.75rem;">
+                <span style="color:var(--color-coral); flex-shrink:0; margin-top:0.1rem;">—</span>
+                <span>Mapped each requirement to resume evidence with quoted source citations, giving explainable, grounded results instead of an opaque match score.</span>
+              </li>
+              <li style="display:flex; gap:0.75rem;">
+                <span style="color:var(--color-coral); flex-shrink:0; margin-top:0.1rem;">—</span>
+                <span>Auto-generated targeted interview questions from skill gaps; built the FastAPI backend with PostgreSQL and a React frontend for live demos.</span>
+              </li>
+            </ul>
+          </div>
+          <div class="skill-object-wrap" aria-hidden="true" style="align-self:center;">
+            <div class="anchor" data-anchor="hireflow" data-object="flight-route" data-waypoints="Resumes &amp; job descriptions,Structured requirements &amp; profiles,Requirements matched to quoted evidence,Interview questions"></div>
+            <div class="object-fallback" aria-hidden="true">
+          <img src="/fallback/flight-route.png" alt="" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15)); max-width: 80vmin;" loading="lazy">
+        </div>
+          </div>
+        </div>
+      </article>
+
+    </section><!-- /projects -->
+
+    <!-- ═══════════════════════════════════════════════════════
+         G. PROFESSIONAL EXPERIENCE
+    ═══════════════════════════════════════════════════════ -->
+    <section id="experience" class="section-wrap" aria-labelledby="exp-heading">
+      <div style="max-width:900px; margin:0 auto; padding:6rem 2rem;">
+        <p class="label-mono" style="margin-bottom:0.75rem;">// 10 — professional experience</p>
+        <h2 id="exp-heading" class="display-huge" style="margin:0 0 4rem;">Experience</h2>
+
+        <!-- Experience orbit anchor -->
+        <div class="anchor" data-anchor="exp-ring" data-object="exp-ring" aria-hidden="true" style="position:relative;"></div>
+
+        <div class="timeline">
+
+          <!-- Role 1: Algoza Technologies -->
+          <div class="timeline-role">
+            <div class="timeline-dot current" aria-hidden="true"></div>
+            <div style="display:flex; flex-wrap:wrap; gap:0.5rem 1.5rem; align-items:baseline; margin-bottom:0.5rem;">
+              <h3 style="font-family:var(--font-display); font-size:1.75rem; font-weight:300; margin:0;">Senior Full Stack Developer</h3>
+              <span style="color:var(--color-plum); font-family:var(--font-mono); font-size:10px; letter-spacing:0.06em; text-transform:uppercase;">Present</span>
+            </div>
+            <p style="font-family:var(--font-body); font-size:14px; color:var(--color-ink-secondary); margin:0 0 1.25rem;">Algoza Technologies Pvt. Ltd. &nbsp;·&nbsp; Oct 2024 – Present</p>
+            <ul style="padding-left:0; list-style:none; display:flex; flex-direction:column; gap:0.9rem;">
+              <li style="display:flex; gap:0.75rem; font-size:15px; line-height:1.6;">
+                <span style="color:var(--color-coral); flex-shrink:0;">—</span>
+                <span>Led backend services (Node.js, Express.js, PHP, MySQL, MongoDB) and admin panel development for a fantasy sports platform serving 200,000+ users, covering user management, promo codes, and payment reporting.</span>
+              </li>
+              <li style="display:flex; gap:0.75rem; font-size:15px; line-height:1.6;">
+                <span style="color:var(--color-coral); flex-shrink:0;">—</span>
+                <span>Built an end-to-end Finix payment gateway integration: card deposits, Evervault tokenization, 3DS2 authentication, ACH cashouts, and bank account payment instruments, with webhook-based, event-driven asynchronous processing.</span>
+              </li>
+              <li style="display:flex; gap:0.75rem; font-size:15px; line-height:1.6;">
+                <span style="color:var(--color-coral); flex-shrink:0;">—</span>
+                <span>Implemented automated recovery for failed ACH transfers that restores cash, bonus, and rollover balances with idempotent processing to prevent duplicate transactions and keep financial data consistent.</span>
+              </li>
+              <li style="display:flex; gap:0.75rem; font-size:15px; line-height:1.6;">
+                <span style="color:var(--color-coral); flex-shrink:0;">—</span>
+                <span>Integrated Ethoca fraud prevention, reducing false positives by 30% and lowering chargeback losses; integrated SportsRadar and RotoWire sports data APIs.</span>
+              </li>
+              <li style="display:flex; gap:0.75rem; font-size:15px; line-height:1.6;">
+                <span style="color:var(--color-coral); flex-shrink:0;">—</span>
+                <span>Built a user analytics dashboard combining MongoDB and MySQL data (first/last play, 7-day, 30-day, and lifetime P&amp;L, most-played games) used by the admin team.</span>
+              </li>
+              <li style="display:flex; gap:0.75rem; font-size:15px; line-height:1.6;">
+                <span style="color:var(--color-coral); flex-shrink:0;">—</span>
+                <span>Led multi-tenant real estate CRM modules with tenant-based data isolation, optimizing APIs to process 50,000+ leads; increased lead conversion by 25% and saved 20+ hours per month through automation.</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Role 2: Aryavrat Infotech -->
+          <div class="timeline-role">
+            <div class="timeline-dot" aria-hidden="true"></div>
+            <h3 style="font-family:var(--font-display); font-size:1.75rem; font-weight:300; margin:0 0 0.25rem;">Node.js &amp; SQL Developer</h3>
+            <p style="font-family:var(--font-body); font-size:14px; color:var(--color-ink-secondary); margin:0 0 1.25rem;">Aryavrat Infotech Pvt. Ltd. &nbsp;·&nbsp; Dec 2023 – Oct 2024</p>
+            <ul style="padding-left:0; list-style:none; display:flex; flex-direction:column; gap:0.9rem;">
+              <li style="display:flex; gap:0.75rem; font-size:15px; line-height:1.6;">
+                <span style="color:var(--color-coral); flex-shrink:0;">—</span>
+                <span>Built Node.js APIs and bulk holiday upload and leave management modules for DeskTrack (HR &amp; productivity), serving 10+ teams and reducing manual data entry by 80%.</span>
+              </li>
+              <li style="display:flex; gap:0.75rem; font-size:15px; line-height:1.6;">
+                <span style="color:var(--color-coral); flex-shrink:0;">—</span>
+                <span>In Lead Management reduced page load time by 40% and delivered real-time Chart.js dashboards for 200+ clients.</span>
+              </li>
+              <li style="display:flex; gap:0.75rem; font-size:15px; line-height:1.6;">
+                <span style="color:var(--color-coral); flex-shrink:0;">—</span>
+                <span>Wrote and optimized SQL queries and Node.js APIs to improve response times; fixed production bugs in Lead Management and DeskTrack applications.</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Role 3: UBWS -->
+          <div class="timeline-role">
+            <div class="timeline-dot" aria-hidden="true"></div>
+            <h3 style="font-family:var(--font-display); font-size:1.75rem; font-weight:300; margin:0 0 0.25rem;">PHP Developer</h3>
+            <p style="font-family:var(--font-body); font-size:14px; color:var(--color-ink-secondary); margin:0 0 1.25rem;">Unified Business Web Solution Pvt. Ltd. &nbsp;·&nbsp; Jan 2023 – Dec 2023</p>
+            <ul style="padding-left:0; list-style:none; display:flex; flex-direction:column; gap:0.9rem;">
+              <li style="display:flex; gap:0.75rem; font-size:15px; line-height:1.6;">
+                <span style="color:var(--color-coral); flex-shrink:0;">—</span>
+                <span>Developed a CRM / educational management system, a WHM portal, and custom admin panels for multiple clients.</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Role 4: Global India IT Solutions -->
+          <div class="timeline-role" style="padding-bottom:0;">
+            <div class="timeline-dot" aria-hidden="true"></div>
+            <h3 style="font-family:var(--font-display); font-size:1.75rem; font-weight:300; margin:0 0 0.25rem;">Full Stack Developer</h3>
+            <p style="font-family:var(--font-body); font-size:14px; color:var(--color-ink-secondary); margin:0 0 1.25rem;">Global India IT Solutions &nbsp;·&nbsp; Jun 2022 – Jan 2023</p>
+            <ul style="padding-left:0; list-style:none; display:flex; flex-direction:column; gap:0.9rem;">
+              <li style="display:flex; gap:0.75rem; font-size:15px; line-height:1.6;">
+                <span style="color:var(--color-coral); flex-shrink:0;">—</span>
+                <span>Developed and maintained responsive web applications using PHP, MySQL, JavaScript, jQuery, and AJAX.</span>
+              </li>
+            </ul>
+          </div>
+
+        </div><!-- /timeline -->
+      </div>
+    </section><!-- /experience -->
+
+    <!-- ═══════════════════════════════════════════════════════
+         H. EDUCATION
+    ═══════════════════════════════════════════════════════ -->
+    <section id="education" class="section-wrap" aria-labelledby="edu-heading">
+      <div style="max-width:900px; margin:0 auto; padding:4rem 2rem 6rem;">
+        <p class="label-mono" style="margin-bottom:0.75rem;">// 11 — education</p>
+        <h2 id="edu-heading" class="display-slide" style="margin:0 0 0.5rem;">Education</h2>
+        <div class="anchor" data-anchor="education" data-object="pale-dot" aria-hidden="true" style="position:relative; display:inline-block;"></div>
+        <p style="font-family:var(--font-display); font-size:1.75rem; font-weight:300; margin:1.5rem 0 0.25rem;">
+          Bachelor of Arts (B.A.)
+        </p>
+        <p style="font-size:15px; color:var(--color-ink-secondary);">University of Rajasthan, Jaipur &nbsp;·&nbsp; 2020 – 2022</p>
+      </div>
+    </section><!-- /education -->
+
+    <!-- ═══════════════════════════════════════════════════════
+         I. CONTACT / FOOTER
+    ═══════════════════════════════════════════════════════ -->
+    <section id="contact" class="section-wrap" aria-labelledby="contact-heading">
+      <div style="max-width:1000px; margin:0 auto; padding:0 2rem 6rem;">
+        <!-- 3D anchor: pulsing beacon -->
+        <div class="anchor" data-anchor="contact" data-object="beacon" aria-hidden="true"></div>
+
+        <p class="label-mono" style="margin-bottom:1.5rem;">// let's build something</p>
+        <h2 id="contact-heading" class="display-huge" style="margin:0 0 2rem;">Kuldeep Singh</h2>
+
+        <p style="font-family:var(--font-display); font-size:1.4rem; font-weight:300; color:var(--color-ink-secondary); max-width:520px; line-height:1.6; margin:0 0 3rem;">
+          Open to backend-heavy projects, agentic AI work, and systems that need to not break at 3 AM.
+        </p>
+
+        <div style="display:flex; flex-direction:column; gap:0.75rem; margin-bottom:3rem;">
+          <p style="margin:0; font-size:15px;">📍 Jaipur, Rajasthan, India</p>
+          <p style="margin:0;">
+            <a href="mailto:artateight@gmail.com" class="ink-link">artateight@gmail.com</a>
+          </p>
+          <p style="margin:0;">
+            <a href="https://linkedin.com/in/kuldeep-singh-99b204280" target="_blank" rel="noreferrer" class="ink-link">LinkedIn ↗</a>
+          </p>
+          <p style="margin:0;">
+            <a href="https://github.com/Kuldeep-Singh-Naruka" target="_blank" rel="noreferrer" class="ink-link">GitHub ↗</a>
+          </p>
+          <!-- Phone: assembled by JS at click time, not in static HTML -->
+          <p style="margin:0;">
+            <button id="reveal-phone" class="cta-ghost" style="padding:0.4rem 1rem; font-size:13px;">
+              Show phone number
+            </button>
+            <span id="phone-display" style="display:none; font-size:15px; margin-left:0.75rem;"></span>
+          </p>
+        </div>
+
+        <div style="display:flex; flex-wrap:wrap; gap:1rem;">
+          <a href="/resume/Kuldeep_Singh_Resume.pdf" class="cta-primary" download>Download resume</a>
+          <a href="mailto:artateight@gmail.com" class="cta-ghost">Say hello</a>
+        </div>
+      </div>
+
+      <!-- Footer small print -->
+      <div style="border-top:1px solid rgba(28,34,38,0.1); margin-top:4rem; padding:2rem; display:flex; flex-wrap:wrap; gap:1rem; justify-content:space-between; align-items:center; font-family:var(--font-mono); font-size:10px; color:var(--color-ink-secondary); letter-spacing:0.04em;">
+        <span>© <span id="footer-year">2025</span> Kuldeep Singh</span>
+        <span id="build-info">build local</span>
+        <span>Vite · Three.js · GSAP · Tailwind CSS v4 · Lenis</span>
+        <a href="view-source:https://kuldeep-singh-naruka.netlify.app/" class="ink-link" style="font-size:10px;">view source</a>
+      </div>
+    </section><!-- /contact -->
+
+  </main>
+
+  <!-- Command palette -->
+  <div id="palette-overlay" role="dialog" aria-modal="true" aria-label="Command palette" aria-hidden="true">
+    <div id="palette-box">
+      <input id="palette-input" type="text" placeholder="Type a command..." autocomplete="off" spellcheck="false" aria-label="Command palette search">
+      <div id="palette-results" role="listbox" aria-label="Commands"></div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
