@@ -1,59 +1,29 @@
 // ─── scene/index.js ──────────────────────────────────────────────────────────
-// Orrery 3D scene manager. Lazy-loaded after first paint.
-//
-// SCROLL AS ENGINE:
-//  - All animation (except drag, hover, tiny twinkle) is driven by scroll.
-//  - Each object tracks a smoothed local scroll progress 'p' (0 to 1) 
-//    via a critically damped spring.
-// ─────────────────────────────────────────────────────────────────────────────
-
 import {
-  WebGLRenderer, Scene, PerspectiveCamera, Color, SRGBColorSpace, Vector2, Raycaster
+  WebGLRenderer, Scene, PerspectiveCamera, SRGBColorSpace, Vector2, MathUtils, Clock,
+  AmbientLight, DirectionalLight, Color
 } from 'three';
+import { createMasterScene } from './master.js';
+import { SECTION_STATES } from './state.js';
 
-import { createSun }               from './objects/sun.js';
-import { createRagCloud }          from './objects/rag-cloud.js';
-import { createConstellationGraph }from './objects/constellation.js';
-import { createPlanetMoons }       from './objects/planet-moons.js';
-import { createRingedPlanet }      from './objects/ringed-planet.js';
-import { createStrataPlanet }      from './objects/strata-planet.js';
-import { createSatellite }         from './objects/satellite.js';
-import { createOrbitPlanet }       from './objects/orbit-planet.js';
-import { createHashRing }          from './objects/hash-ring.js';
-import { createFlightRoute }       from './objects/flight-route.js';
-import { createBeacon }            from './objects/beacon.js';
-import { createOrreryOverview }    from './objects/orrery-overview.js';
-
-const FACTORIES = {
-  'sun':            createSun,
-  'rag-cloud':      createRagCloud,
-  'constellation':  createConstellationGraph,
-  'planet-moons':   createPlanetMoons,
-  'ringed-planet':  createRingedPlanet,
-  'strata-planet':  createStrataPlanet,
-  'satellite':      createSatellite,
-  'orbit-planet':   createOrbitPlanet,
-  'hash-ring':      createHashRing,
-  'flight-route':   createFlightRoute,
-  'orrery-overview':createOrreryOverview,
-  'pale-dot':       createPlanetMoons,
-  'beacon':         createBeacon,
-  'exp-ring':       createOrreryOverview,
-};
-
-const objects = {}; // id -> { group, update, slotEl, drag, spring }
-let renderer, scene, camera;
+let renderer, scene, camera, masterScene;
 let threeOn = true;
 let isRunning = true;
-let pixelRatio;
 let fov = 55;
 const mouse2d = new Vector2();
 let rafId;
+let scrollContext = null;
+let clock = new Clock();
 
-// Drag state
-const drag = { active: false, id: null, px: 0, py: 0 };
+// Spring states
+const posSpring = { x: 0, y: 0, vx: 0, vy: 0, omega: 12 };
+const rotSpring = { x: 0, y: 0, vx: 0, vy: 0, omega: 8 };
+
+// Milestones mapped from DOM
+let milestones = [];
 
 export function initScene(scrollCtx) {
+  scrollContext = scrollCtx;
   const canvas = document.getElementById('orrery-canvas');
   if (!canvas) return;
 
@@ -65,7 +35,7 @@ export function initScene(scrollCtx) {
     return;
   }
 
-  pixelRatio = Math.min(window.devicePixelRatio, 2);
+  const pixelRatio = Math.min(window.devicePixelRatio, 2);
   renderer = new WebGLRenderer({ canvas, alpha: true, antialias: pixelRatio < 1.5 });
   renderer.setPixelRatio(pixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -76,31 +46,21 @@ export function initScene(scrollCtx) {
   camera = new PerspectiveCamera(fov, window.innerWidth / window.innerHeight, 0.1, 3000);
   updateCameraZ();
 
-  document.querySelectorAll('[data-anchor]').forEach(anchorEl => {
-    const id = anchorEl.dataset.anchor;
-    const type = anchorEl.dataset.object;
-    const factory = FACTORIES[type];
-    if (!factory) return;
+  const isMobile = window.innerWidth < 768;
+  masterScene = createMasterScene(isMobile);
+  scene.add(masterScene.group);
 
-    const slotEl = anchorEl.closest('.skill-object-wrap, .project-object-wrap, #hero, #overview, #contact') || anchorEl.parentElement;
-    const obj = factory({ ...anchorEl.dataset });
-    if (!obj) return;
+  // Lighting setup
+  const ambientLight = new AmbientLight(0xffffff, 0.4);
+  scene.add(ambientLight);
 
-    scene.add(obj.group);
-    
-    // Critical Damped Spring for scroll progress (target p, current p, velocity v)
-    const spring = { p: 0, target: 0, v: 0, omega: 18 }; 
+  const dirLight = new DirectionalLight(0xfff0dd, 2.5);
+  dirLight.position.set(5, 5, 4);
+  scene.add(dirLight);
 
-    objects[id] = { 
-      group: obj.group, 
-      update: obj.update, 
-      slotEl, 
-      drag: { rotX: 0, rotY: 0, velX: 0, velY: 0, impulseX: 0, impulseY: 0 },
-      spring
-    };
-
-    if (slotEl) wireDrag(slotEl, id);
-  });
+  const fillLight = new DirectionalLight(0xddeeff, 1.2);
+  fillLight.position.set(-5, -2, -2);
+  scene.add(fillLight);
 
   const threeBtn = document.getElementById('three-toggle');
   threeBtn?.addEventListener('click', () => {
@@ -112,11 +72,9 @@ export function initScene(scrollCtx) {
     if (!threeOn) showFallbacks(); else hideFallbacks();
   });
 
-  let mouseX = 0, mouseY = 0;
   window.addEventListener('pointermove', e => {
-    mouseX = (e.clientX / window.innerWidth) * 2 - 1;
-    mouseY = -((e.clientY / window.innerHeight) * 2 - 1);
-    mouse2d.set(mouseX, mouseY);
+    mouse2d.x = (e.clientX / window.innerWidth) * 2 - 1;
+    mouse2d.y = -((e.clientY / window.innerHeight) * 2 - 1);
   }, { passive: true });
 
   document.addEventListener('visibilitychange', () => {
@@ -125,211 +83,180 @@ export function initScene(scrollCtx) {
   });
 
   window.addEventListener('resize', onResize);
-
-  let lastTs = performance.now();
-  let settled = false;
-
-  function loop(ts) {
-    rafId = requestAnimationFrame(loop);
-    if (!isRunning || !threeOn || window.__isFrozen) return;
-
-    const dt = Math.min((ts - lastTs) * 0.001, 0.05);
-    lastTs = ts;
-    const t = ts * 0.001;
-
-    const activeId = getActiveAnchorId();
-    const globalVel = scrollCtx?.velocity || 0;
-    
-    // Global exposure for tests
-    if (window.__orrery) {
-      window.__orrery.settled = true;
-      window.__orrery.activeId = activeId;
-    }
-
-    for (const id in objects) {
-      const obj = objects[id];
-      const isActive = id === activeId;
-      const d = obj.drag;
-      const s = obj.spring;
-
-      // Calculate raw scroll progress for this object's slot (0 = entering bottom, 1 = exiting top)
-      const rect = obj.slotEl.getBoundingClientRect();
-      const h = window.innerHeight;
-      const totalDist = h + rect.height;
-      let rawP = 0;
-      if (rect.bottom > 0 && rect.top < h) {
-         rawP = 1.0 - (rect.bottom / totalDist);
-      } else if (rect.bottom <= 0) {
-         rawP = 1.0;
-      }
-
-      s.target = rawP;
-
-      // Critically damped spring towards rawP
-      const damping = 2 * s.omega; // critical damping
-      const f = -s.omega * s.omega * (s.p - s.target) - damping * s.v;
-      s.v += f * dt;
-      s.p += s.v * dt;
-
-      if (Math.abs(s.p - s.target) > 0.001 || Math.abs(s.v) > 0.001) {
-        if (window.__orrery) window.__orrery.settled = false;
-      }
-
-      positionInSlot(obj, rect);
-
-      // Drag inertia
-      d.rotX += d.velX * dt;
-      d.rotY += d.velY * dt;
-      d.velX *= 0.88; 
-      d.velY *= 0.88;
-
-      if (!drag.active || drag.id !== id) {
-        d.rotX *= 0.95; 
-        d.rotY *= 0.95;
-      }
-      
-      // Scroll impulse (velocity adds temporary spin)
-      // Decay impulse rapidly
-      d.impulseX *= 0.9;
-      d.impulseY *= 0.9;
-      if (isActive && Math.abs(globalVel) > 0) {
-        d.impulseY = Math.max(Math.min(globalVel * 0.005, 0.5), -0.5);
-      }
-
-      const tiltX = mouseY * 0.1 + d.rotX + d.impulseX;
-      const tiltY = mouseX * 0.1 + d.rotY + d.impulseY;
-
-      if (obj.update && obj.group.visible) {
-        obj.update({ t, dt, p: s.p, isActive, mouseNDC: { x: mouseX, y: mouseY }, tiltX, tiltY });
-      }
-      
-      if (isActive && window.__orrery) {
-        window.__orrery.progress = s.p;
-        window.__orrery.rotation = { x: tiltX, y: tiltY };
-      }
-    }
-
-    renderer.render(scene, camera);
-  }
   
-  window.__orrery = { settled: false, activeId: null, progress: 0, rotation: {x:0, y:0} };
-  window.__sceneObjects = objects; // For fallback renderer
+  // Calculate scroll milestones
+  recalcMilestones();
+  window.addEventListener('resize', () => setTimeout(recalcMilestones, 500));
 
-  // Allow fallback renderer to force active
-  window.addEventListener('forceRenderObj', (e) => {
-    window.__isFrozen = true;
-    const id = e.detail;
-    window.__orrery.activeId = id;
-    for (const key in objects) {
-       objects[key].group.visible = (key === id);
-       objects[key].spring.p = 0.5;
-       if (objects[key].group.visible) {
-         objects[key].group.position.set(0, 0, 0); // Center
-         objects[key].group.scale.setScalar(1.5);
-         if (objects[key].update) {
-           for (let i = 0; i < 100; i++) {
-             objects[key].update({ t: 1.0, dt: 0.016, p: 0.5, isActive: true, mouseNDC: {x:0, y:0}, tiltX: 0, tiltY: 0 });
-           }
-         }
-       }
-    }
-    renderer.render(scene, camera);
-  });
-
+  clock.start();
   rafId = requestAnimationFrame(loop);
 }
 
-function positionInSlot(obj, rect) {
-  if (rect.bottom < -window.innerHeight * 2 || rect.top > window.innerHeight * 3) {
-    obj.group.visible = false;
-    return;
-  }
-  obj.group.visible = true;
-  if (rect.width === 0 || rect.height === 0) return;
-
-  const cx = rect.left + rect.width / 2;
-  const cy = rect.top  + rect.height / 2;
-
-  const camDist = camera.position.z;
-  const fovRad = fov * (Math.PI / 180);
-  const halfH = Math.tan(fovRad / 2) * camDist;
-  const halfW = halfH * camera.aspect;
-
-  const worldX =  ((cx / window.innerWidth)  * 2 - 1) * halfW;
-  const worldY = -((cy / window.innerHeight) * 2 - 1) * halfH;
-
-  const slotSize = Math.min(rect.width, rect.height) * 0.75;
-  const pxPerUnit = halfH / (window.innerHeight / 2);
-  const worldSize = slotSize * pxPerUnit;
-
-  const objectRadius = 100;
-  const scale = worldSize / (objectRadius * 2);
-
-  obj.group.position.set(worldX, worldY, 0);
-  obj.group.scale.setScalar(Math.max(scale, 0.001));
-}
-
-function getActiveAnchorId() {
-  const vcy = window.innerHeight / 2;
-  const vcx = window.innerWidth  / 2;
-  let closestId = null, closestDist = Infinity;
-
-  document.querySelectorAll('[data-anchor]').forEach(el => {
+function recalcMilestones() {
+  const sections = Array.from(document.querySelectorAll('.section-wrap, .project-slide'));
+  const totalScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+  
+  milestones = sections.map(el => {
+    const id = el.id || el.closest('[id]')?.id;
     const rect = el.getBoundingClientRect();
-    const ex = rect.left + rect.width  / 2;
-    const ey = rect.top  + rect.height / 2;
-    const dist = Math.hypot(ex - vcx, ey - vcy);
-    if (dist < closestDist) { closestDist = dist; closestId = el.dataset.anchor; }
-  });
-  return closestId;
+    const absoluteTop = window.scrollY + rect.top;
+    const absoluteCenter = absoluteTop + rect.height / 2;
+    
+    let p = (absoluteCenter - window.innerHeight / 2) / totalScroll;
+    
+    if (id === 'hero') p = 0;
+    if (id === 'contact') p = 1;
+    
+    p = Math.max(0, Math.min(1, p));
+    
+    return {
+      id,
+      p,
+      el,
+      state: SECTION_STATES[id] || SECTION_STATES['hero']
+    };
+  }).filter(m => m.id && m.state).sort((a, b) => a.p - b.p);
 }
 
-function wireDrag(slotEl, id) {
-  slotEl.style.cursor = 'grab';
-  slotEl.setAttribute('tabindex', '0');
-  slotEl.setAttribute('aria-label', 'Interactive 3D model. Drag to rotate.');
+function getInterpolatedState(p) {
+  if (!milestones.length) return SECTION_STATES['hero'];
+  if (p <= milestones[0].p) return milestones[0].state;
+  if (p >= milestones[milestones.length - 1].p) return milestones[milestones.length - 1].state;
+  
+  for (let i = 0; i < milestones.length - 1; i++) {
+    const m1 = milestones[i];
+    const m2 = milestones[i + 1];
+    if (p >= m1.p && p <= m2.p) {
+      const t = (p - m1.p) / (m2.p - m1.p);
+      // Smoothstep for non-linear state morphs
+      const st = t * t * (3 - 2 * t);
+      
+      return {
+        shape1: m1.state.shape,
+        shape2: m2.state.shape,
+        shapeBlend: st, // 0 means shape1, 1 means shape2
+        coreScale: MathUtils.lerp(m1.state.coreScale, m2.state.coreScale, st),
+        coreOpacity: MathUtils.lerp(m1.state.coreOpacity, m2.state.coreOpacity, st),
+        camZ: MathUtils.lerp(m1.state.camZ, m2.state.camZ, st),
+        camRotX: MathUtils.lerp(m1.state.camRotX, m2.state.camRotX, st),
+        camRotY: MathUtils.lerp(m1.state.camRotY, m2.state.camRotY, st),
+        noiseAmp: MathUtils.lerp(m1.state.noiseAmp, m2.state.noiseAmp, st)
+      };
+    }
+  }
+  return milestones[milestones.length - 1].state;
+}
 
-  slotEl.addEventListener('pointerdown', e => {
-    if (e.button !== undefined && e.button !== 0) return;
-    if (e.pointerType === 'mouse') e.preventDefault(); // allow touch scroll
-    slotEl.style.cursor = 'grabbing';
-    slotEl.setPointerCapture(e.pointerId);
-    drag.active = true;
-    drag.id = id;
-    drag.px = e.clientX;
-    drag.py = e.clientY;
-    objects[id].drag.velX = 0;
-    objects[id].drag.velY = 0;
+function getActiveAnchor() {
+  const vcy = window.innerHeight / 2;
+  let closestEl = null, closestDist = Infinity;
+
+  document.querySelectorAll('.anchor').forEach(el => {
+    const slotEl = el.closest('.skill-object-wrap, .project-object-wrap, #hero, #overview, #contact') || el.parentElement;
+    const rect = slotEl.getBoundingClientRect();
+    const ey = rect.top + rect.height / 2;
+    const dist = Math.abs(ey - vcy);
+    // Add horizontal distance to disambiguate if needed, but vertical is primary
+    if (dist < closestDist) { closestDist = dist; closestEl = slotEl; }
   });
+  return closestEl;
+}
 
-  slotEl.addEventListener('pointermove', e => {
-    if (!drag.active || drag.id !== id) return;
-    const dx = e.clientX - drag.px;
-    const dy = e.clientY - drag.py;
-    drag.px = e.clientX;
-    drag.py = e.clientY;
-    objects[id].drag.velX += dy * 0.005;
-    objects[id].drag.velY += dx * 0.005;
-  });
+function loop() {
+  rafId = requestAnimationFrame(loop);
+  if (!isRunning || !threeOn || !masterScene) return;
 
-  const endDrag = () => {
-    if (drag.id !== id) return;
-    drag.active = false;
-    drag.id = null;
-    slotEl.style.cursor = 'grab';
-  };
-  slotEl.addEventListener('pointerup', endDrag);
-  slotEl.addEventListener('pointercancel', endDrag);
+  const dt = Math.min(clock.getDelta(), 0.05);
+  const t = clock.getElapsedTime();
 
-  slotEl.addEventListener('keydown', e => {
-    const d = objects[id]?.drag;
-    if (!d) return;
-    const step = 0.04;
-    if (e.key === 'ArrowLeft')  { d.velY -= step; e.preventDefault(); }
-    if (e.key === 'ArrowRight') { d.velY += step; e.preventDefault(); }
-    if (e.key === 'ArrowUp')    { d.velX -= step; e.preventDefault(); }
-    if (e.key === 'ArrowDown')  { d.velX += step; e.preventDefault(); }
-  });
+  const isNight = document.body.classList.contains('night') ? 1 : 0;
+  masterScene.particleMat.uniforms.uTime.value = t;
+  masterScene.particleMat.uniforms.uNight.value = MathUtils.lerp(masterScene.particleMat.uniforms.uNight.value, isNight, dt * 5);
+  masterScene.coreMat.color.lerp(new Color(isNight ? '#111315' : '#f5eee6'), dt * 5);
+
+  // 1. Get interpolated state based on scroll progress
+  const p = scrollContext ? scrollContext.progress : 0;
+  const state = getInterpolatedState(p);
+
+  // 2. Apply state
+  if (state.shapeBlend !== undefined) {
+    // Blending between two shapes
+    const weights = [0,0,0,0,0,0,0,0,0];
+    weights[state.shape1] = 1.0 - state.shapeBlend;
+    weights[state.shape2] = state.shapeBlend;
+    masterScene.particleMat.uniforms.uW.value = weights;
+  } else {
+    // Exact state
+    const weights = [0,0,0,0,0,0,0,0,0];
+    weights[state.shape || 0] = 1.0;
+    masterScene.particleMat.uniforms.uW.value = weights;
+  }
+
+  // Set particle noise
+  masterScene.particleMat.uniforms.uNoiseAmp.value = state.noiseAmp;
+
+  // Apply core scale & opacity
+  masterScene.coreMesh.scale.setScalar(MathUtils.lerp(masterScene.coreMesh.scale.x, state.coreScale, dt * 4));
+  masterScene.coreMat.opacity = MathUtils.lerp(masterScene.coreMat.opacity, state.coreOpacity, dt * 4);
+
+  // Camera Z
+  camera.position.z = MathUtils.lerp(camera.position.z, state.camZ, dt * 2);
+  
+  // 3. Position tracking (spring towards active anchor)
+  const anchor = getActiveAnchor();
+  let targetX = 0, targetY = 0;
+  let targetScale = 1;
+
+  if (anchor) {
+    const rect = anchor.getBoundingClientRect();
+    if (rect.width > 0 && rect.height > 0) {
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top  + rect.height / 2;
+
+      const camDist = camera.position.z;
+      const fovRad = fov * (Math.PI / 180);
+      const halfH = Math.tan(fovRad / 2) * camDist;
+      const halfW = halfH * camera.aspect;
+
+      targetX =  ((cx / window.innerWidth)  * 2 - 1) * halfW;
+      targetY = -((cy / window.innerHeight) * 2 - 1) * halfH;
+
+      const slotSize = Math.min(rect.width, rect.height) * 0.75;
+      const pxPerUnit = halfH / (window.innerHeight / 2);
+      targetScale = Math.min((slotSize * pxPerUnit) / 5, 2.0); // clamp max scale
+    }
+  }
+
+  // Critical spring for position
+  const damping = 2 * posSpring.omega;
+  const fx = -posSpring.omega * posSpring.omega * (posSpring.x - targetX) - damping * posSpring.vx;
+  const fy = -posSpring.omega * posSpring.omega * (posSpring.y - targetY) - damping * posSpring.vy;
+  posSpring.vx += fx * dt;
+  posSpring.vy += fy * dt;
+  posSpring.x += posSpring.vx * dt;
+  posSpring.y += posSpring.vy * dt;
+
+  masterScene.group.position.set(posSpring.x, posSpring.y, 0);
+  masterScene.group.scale.setScalar(MathUtils.lerp(masterScene.group.scale.x, targetScale, dt * 4));
+
+  // 4. Rotation tracking
+  const globalVel = scrollContext ? scrollContext.velocity : 0;
+  const scrollImpulse = Math.max(Math.min(globalVel * 0.005, 0.5), -0.5);
+  
+  const targetRotX = (state.camRotX || 0) + mouse2d.y * 0.1;
+  const targetRotY = (state.camRotY || 0) + mouse2d.x * 0.1 + scrollImpulse;
+
+  const rotDamping = 2 * rotSpring.omega;
+  const frx = -rotSpring.omega * rotSpring.omega * (rotSpring.x - targetRotX) - rotDamping * rotSpring.vx;
+  const fry = -rotSpring.omega * rotSpring.omega * (rotSpring.y - targetRotY) - rotDamping * rotSpring.vy;
+  rotSpring.vx += frx * dt;
+  rotSpring.vy += fry * dt;
+  rotSpring.x += rotSpring.vx * dt;
+  rotSpring.y += rotSpring.vy * dt;
+
+  masterScene.group.rotation.set(rotSpring.x, rotSpring.y, 0);
+
+  renderer.render(scene, camera);
 }
 
 function onResize() {
@@ -338,6 +265,7 @@ function onResize() {
   updateCameraZ();
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
+  recalcMilestones();
 }
 
 function updateCameraZ() {
