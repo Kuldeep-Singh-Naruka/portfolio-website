@@ -15,11 +15,10 @@ let rafId;
 let scrollContext = null;
 let clock = new Clock();
 
-// Spring states
+// Spring states for physical tracking
 const posSpring = { x: 0, y: 0, vx: 0, vy: 0, omega: 12 };
 const rotSpring = { x: 0, y: 0, vx: 0, vy: 0, omega: 8 };
 
-// Milestones mapped from DOM
 let milestones = [];
 
 export function initScene(scrollCtx) {
@@ -50,17 +49,21 @@ export function initScene(scrollCtx) {
   masterScene = createMasterScene(isMobile);
   scene.add(masterScene.group);
 
-  // Lighting setup
-  const ambientLight = new AmbientLight(0xffffff, 0.4);
+  // Cinematic Lighting Rig
+  const ambientLight = new AmbientLight(0xffffff, 0.2); // Very subtle ambient
   scene.add(ambientLight);
 
-  const dirLight = new DirectionalLight(0xfff0dd, 2.5);
-  dirLight.position.set(5, 5, 4);
-  scene.add(dirLight);
+  const keyLight = new DirectionalLight(0xfff0dd, 3.5); // Warm key light
+  keyLight.position.set(5, 5, 4);
+  scene.add(keyLight);
 
-  const fillLight = new DirectionalLight(0xddeeff, 1.2);
+  const fillLight = new DirectionalLight(0xddeeff, 1.5); // Cool fill light
   fillLight.position.set(-5, -2, -2);
   scene.add(fillLight);
+
+  const rimLight = new DirectionalLight(0xffffff, 4.0); // Strong rim light to separate core from black background
+  rimLight.position.set(0, 5, -10);
+  scene.add(rimLight);
 
   const threeBtn = document.getElementById('three-toggle');
   threeBtn?.addEventListener('click', () => {
@@ -84,7 +87,6 @@ export function initScene(scrollCtx) {
 
   window.addEventListener('resize', onResize);
   
-  // Calculate scroll milestones
   recalcMilestones();
   window.addEventListener('resize', () => setTimeout(recalcMilestones, 500));
 
@@ -118,6 +120,18 @@ function recalcMilestones() {
   }).filter(m => m.id && m.state).sort((a, b) => a.p - b.p);
 }
 
+function lerpSec(s1, s2, t) {
+  return {
+    x: MathUtils.lerp(s1.x, s2.x, t),
+    y: MathUtils.lerp(s1.y, s2.y, t),
+    z: MathUtils.lerp(s1.z, s2.z, t),
+    s: MathUtils.lerp(s1.s, s2.s, t),
+    rx: MathUtils.lerp(s1.rx, s2.rx, t),
+    ry: MathUtils.lerp(s1.ry, s2.ry, t),
+    rz: MathUtils.lerp(s1.rz, s2.rz, t)
+  };
+}
+
 function getInterpolatedState(p) {
   if (!milestones.length) return SECTION_STATES['hero'];
   if (p <= milestones[0].p) return milestones[0].state;
@@ -128,19 +142,23 @@ function getInterpolatedState(p) {
     const m2 = milestones[i + 1];
     if (p >= m1.p && p <= m2.p) {
       const t = (p - m1.p) / (m2.p - m1.p);
-      // Smoothstep for non-linear state morphs
-      const st = t * t * (3 - 2 * t);
+      const st = t * t * (3 - 2 * t); // Smoothstep
       
       return {
         shape1: m1.state.shape,
         shape2: m2.state.shape,
-        shapeBlend: st, // 0 means shape1, 1 means shape2
+        shapeBlend: st,
         coreScale: MathUtils.lerp(m1.state.coreScale, m2.state.coreScale, st),
         coreOpacity: MathUtils.lerp(m1.state.coreOpacity, m2.state.coreOpacity, st),
         camZ: MathUtils.lerp(m1.state.camZ, m2.state.camZ, st),
         camRotX: MathUtils.lerp(m1.state.camRotX, m2.state.camRotX, st),
         camRotY: MathUtils.lerp(m1.state.camRotY, m2.state.camRotY, st),
-        noiseAmp: MathUtils.lerp(m1.state.noiseAmp, m2.state.noiseAmp, st)
+        noiseAmp: MathUtils.lerp(m1.state.noiseAmp, m2.state.noiseAmp, st),
+        secA: lerpSec(m1.state.secA, m2.state.secA, st),
+        secB: lerpSec(m1.state.secB, m2.state.secB, st),
+        secC: lerpSec(m1.state.secC, m2.state.secC, st),
+        secD: lerpSec(m1.state.secD, m2.state.secD, st),
+        secE: lerpSec(m1.state.secE, m2.state.secE, st)
       };
     }
   }
@@ -156,7 +174,6 @@ function getActiveAnchor() {
     const rect = slotEl.getBoundingClientRect();
     const ey = rect.top + rect.height / 2;
     const dist = Math.abs(ey - vcy);
-    // Add horizontal distance to disambiguate if needed, but vertical is primary
     if (dist < closestDist) { closestDist = dist; closestEl = slotEl; }
   });
   return closestEl;
@@ -172,37 +189,54 @@ function loop() {
   const isNight = document.body.classList.contains('night') ? 1 : 0;
   masterScene.particleMat.uniforms.uTime.value = t;
   masterScene.particleMat.uniforms.uNight.value = MathUtils.lerp(masterScene.particleMat.uniforms.uNight.value, isNight, dt * 5);
-  masterScene.coreMat.color.lerp(new Color(isNight ? '#111315' : '#f5eee6'), dt * 5);
+  
+  // The core material shifts slightly between a premium dark grey and deep black
+  masterScene.coreMat.color.lerp(new Color(isNight ? '#030405' : '#0f1113'), dt * 5);
 
-  // 1. Get interpolated state based on scroll progress
   const p = scrollContext ? scrollContext.progress : 0;
   const state = getInterpolatedState(p);
 
-  // 2. Apply state
   if (state.shapeBlend !== undefined) {
-    // Blending between two shapes
     const weights = [0,0,0,0,0,0,0,0,0];
     weights[state.shape1] = 1.0 - state.shapeBlend;
     weights[state.shape2] = state.shapeBlend;
     masterScene.particleMat.uniforms.uW.value = weights;
   } else {
-    // Exact state
     const weights = [0,0,0,0,0,0,0,0,0];
     weights[state.shape || 0] = 1.0;
     masterScene.particleMat.uniforms.uW.value = weights;
   }
 
-  // Set particle noise
   masterScene.particleMat.uniforms.uNoiseAmp.value = state.noiseAmp;
 
-  // Apply core scale & opacity
+  // Apply core scale
   masterScene.coreMesh.scale.setScalar(MathUtils.lerp(masterScene.coreMesh.scale.x, state.coreScale, dt * 4));
   masterScene.coreMat.opacity = MathUtils.lerp(masterScene.coreMat.opacity, state.coreOpacity, dt * 4);
 
-  // Camera Z
+  // Apply Secondary Objects
+  const applySec = (mesh, target, idleSpeedX, idleSpeedY, idleSpeedZ) => {
+    mesh.position.x = MathUtils.lerp(mesh.position.x, target.x, dt * 4);
+    mesh.position.y = MathUtils.lerp(mesh.position.y, target.y, dt * 4);
+    mesh.position.z = MathUtils.lerp(mesh.position.z, target.z, dt * 4);
+    mesh.scale.setScalar(MathUtils.lerp(mesh.scale.x, target.s, dt * 4));
+    
+    // Smoothly reach target rotation, then add extremely slow idle rotation
+    mesh.rotation.x = MathUtils.lerp(mesh.rotation.x, target.rx + t * idleSpeedX, dt * 4);
+    mesh.rotation.y = MathUtils.lerp(mesh.rotation.y, target.ry + t * idleSpeedY, dt * 4);
+    mesh.rotation.z = MathUtils.lerp(mesh.rotation.z, target.rz + t * idleSpeedZ, dt * 4);
+  };
+
+  // Give each secondary object a distinct, very subtle idle rotation speed
+  if (state.secA) applySec(masterScene.secA, state.secA, 0.02, 0.05, 0.01);
+  if (state.secB) applySec(masterScene.secB, state.secB, 0.01, 0.02, -0.01);
+  if (state.secC) applySec(masterScene.secC, state.secC, -0.05, 0.03, 0.02);
+  if (state.secD) applySec(masterScene.secD, state.secD, 0.03, -0.04, 0.01);
+  if (state.secE) applySec(masterScene.secE, state.secE, 0.06, 0.01, -0.03);
+
+  // Camera Cinematic Dolly
   camera.position.z = MathUtils.lerp(camera.position.z, state.camZ, dt * 2);
   
-  // 3. Position tracking (spring towards active anchor)
+  // Positional Spring Tracking (DOM anchor mapping)
   const anchor = getActiveAnchor();
   let targetX = 0, targetY = 0;
   let targetScale = 1;
@@ -223,11 +257,10 @@ function loop() {
 
       const slotSize = Math.min(rect.width, rect.height) * 0.75;
       const pxPerUnit = halfH / (window.innerHeight / 2);
-      targetScale = Math.min((slotSize * pxPerUnit) / 5, 2.0); // clamp max scale
+      targetScale = Math.min((slotSize * pxPerUnit) / 5, 2.0);
     }
   }
 
-  // Critical spring for position
   const damping = 2 * posSpring.omega;
   const fx = -posSpring.omega * posSpring.omega * (posSpring.x - targetX) - damping * posSpring.vx;
   const fy = -posSpring.omega * posSpring.omega * (posSpring.y - targetY) - damping * posSpring.vy;
@@ -239,12 +272,12 @@ function loop() {
   masterScene.group.position.set(posSpring.x, posSpring.y, 0);
   masterScene.group.scale.setScalar(MathUtils.lerp(masterScene.group.scale.x, targetScale, dt * 4));
 
-  // 4. Rotation tracking
+  // Cinematic Parallax & Rotation
   const globalVel = scrollContext ? scrollContext.velocity : 0;
-  const scrollImpulse = Math.max(Math.min(globalVel * 0.005, 0.5), -0.5);
+  const scrollImpulse = Math.max(Math.min(globalVel * 0.005, 0.5), -0.5); // Tilt on fast scroll
   
-  const targetRotX = (state.camRotX || 0) + mouse2d.y * 0.1;
-  const targetRotY = (state.camRotY || 0) + mouse2d.x * 0.1 + scrollImpulse;
+  const targetRotX = (state.camRotX || 0) + mouse2d.y * 0.05;
+  const targetRotY = (state.camRotY || 0) + mouse2d.x * 0.05 + scrollImpulse;
 
   const rotDamping = 2 * rotSpring.omega;
   const frx = -rotSpring.omega * rotSpring.omega * (rotSpring.x - targetRotX) - rotDamping * rotSpring.vx;
@@ -255,6 +288,10 @@ function loop() {
   rotSpring.y += rotSpring.vy * dt;
 
   masterScene.group.rotation.set(rotSpring.x, rotSpring.y, 0);
+  
+  // Parallax subtle background movement based on mouse
+  scene.position.x = MathUtils.lerp(scene.position.x, mouse2d.x * 0.5, dt * 2);
+  scene.position.y = MathUtils.lerp(scene.position.y, mouse2d.y * 0.5, dt * 2);
 
   renderer.render(scene, camera);
 }
