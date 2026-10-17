@@ -1,55 +1,78 @@
-# Kuldeep Singh — Orrery Portfolio
+# Kuldeep Singh — Space Portfolio
 
 > Live at: [https://kuldeep-singh-naruka.netlify.app/](https://kuldeep-singh-naruka.netlify.app/)
 
-A light, scroll-driven 3D portfolio themed on space and code. The architecture is a "solar system" (orrery) of my skills, projects, and career history.
+A scroll-driven 3D portfolio: scrolling flies outward from the Sun to a black hole. Every section has **one** recognisable space object beside the text, and the text never sits under it. Nothing moves on its own; everything responds to scroll, pointer or click.
 
-## 🏗 Architecture
+## The journey
 
-The site operates on a principle of **progressive enhancement** and **content-first** design. 
+| Section | Object | Interaction |
+|---|---|---|
+| Hero | The Sun (shader surface + corona) | drag to rotate, hover brightens the corona |
+| Summary | The Moon | drag |
+| Skills 01–08 | Jupiter · Saturn · Mercury · Earth · Mars · Uranus · Neptune · Asteroid belt | drag; rotation follows scroll |
+| Overview | Orrery (whole solar system) | hover a planet for its label, click to jump to that skill |
+| AI Projects | Supernova, scrubbed by scroll (scroll back to un-explode) | scroll |
+| API Monitor Agent | Space probe with signal rings | drag |
+| HireFlow | JWST-style space telescope | drag, hover glints the mirror |
+| Experience | Comet travelling down the timeline | drag to spin |
+| Education | Nebula | pointer parallax |
+| Contact | Black hole with gravitational lensing | move the mouse to bend space, drag to tilt the disk |
 
-```mermaid
-flowchart TD
-    A[src/data/content.js] -->|Single Source of Truth| B(HTML Prerender)
-    B -->|Build Time| C[dist/index.html]
-    C -->|Client Load| D{CSS & JS}
-    D -->|Enhance| E[Lenis & GSAP Scroll]
-    D -->|Lazy Load| F[Three.js Scene]
-    F -->|Map to DOM Anchors| G[3D Objects]
+Background: a 3-layer parallax starfield, a faint Milky Way (dark theme), and **meteors that appear only when you scroll fast or click empty space** (max 2).
+
+## Display settings
+
+The header **View** button (and `Ctrl K`) controls three settings, saved in `localStorage` under `space-settings`:
+
+- **Theme**: Dark (deep space) · Light (astronomy-atlas look) · Auto (follows the OS)
+- **3D**: Full · Lite (lower resolution, fewer particles, no meteors) · Off (still images of the same objects, from `public/stills/`)
+- **Motion**: Full · Reduced (no scroll-driven spin; the supernova shows its final frame)
+
+3D defaults to Lite on phones and low-end devices, and drops from Full to Lite automatically if scrolling gets slow.
+
+## Architecture
+
+```
+src/
+  main.js                 boot: settings → UI → smooth scroll → lazy 3D
+  settings/store.js       theme / 3D / motion (+ a no-flash copy inline in index.html)
+  ui/                     settings popover, Ctrl K palette, phone reveal, counters
+  scroll/index.js         Lenis + GSAP ScrollTrigger
+  scene/
+    index.js              renderer, lights, render-on-demand loop
+    director.js           one body per [data-body] slot: lazy create/dispose, placement, drag, picking
+    fits.js               framing per body (shared by live 3D and stills)
+    registry.js           data-body id → factory
+    sky/                  starfield + Milky Way, meteors
+    bodies/               sun, planet (moon/earth/rings/atmosphere), belt, orrery,
+                          supernova, craft (probe + telescope), comet, nebula, blackhole
+    lib/                  GLSL noise, texture/env cache
+public/textures/          planet maps (WebP, ~1.2 MB total, loaded per section)
+public/stills/            3D-Off renders (made by `npm run stills`)
 ```
 
-1. **Content**: All text (verbatim from my resume) lives in `src/data/content.js` and is hardcoded into `index.html`.
-2. **Scroll Choreography**: Lenis smooth scrolling is synced to GSAP's ticker. As you scroll, CSS backgrounds crossfade and HTML elements reveal themselves.
-3. **3D Scene**: Three.js is lazy-loaded. Objects are positioned in the 3D world by tracking the screen bounds of empty `<div class="anchor">` elements in the DOM. This ensures 3D never overlaps text and scales perfectly on all devices.
+- **Placement:** every object lives in a `.body-slot[data-body]` element in the HTML. The camera maps 1 world unit to 1 CSS pixel, so each body is drawn exactly over its slot and moves with the page.
+- **Render on demand:** frames are drawn only on scroll, pointer, resize, a setting change, a texture load or an active effect, so an idle page uses no GPU.
+- **Lazy:** three.js loads after first paint. A body is created about 1.6 screens before its section and disposed about 4.5 screens after, so only a few are in GPU memory at once.
+- **Content first:** all resume text is static HTML. `npm run verify:content` checks that every string is present and visible.
 
-## 🚀 Running Locally
+## Scripts
 
 ```bash
 npm install
-npm run dev        # Local development server
-npm run build      # Production build
-npm run preview    # Preview production build locally
+npm run dev              # local dev server
+npm run build            # production build → dist/
+npm run preview          # serve dist/ on :4173
+npm run stills           # re-render public/stills/*.webp after changing a body
+npm run verify:content   # build + check every resume string is visible
+npm test                 # Playwright: palette + settings (run `npm run preview` first)
 ```
 
-## 🧪 Verification
+## Credits
 
-To ensure 100% resume fidelity, a Playwright test asserts that every string exists in the static HTML *and* is visibly rendered in the browser.
+Planet maps: [Planet Pixel Emporium](https://planetpixelemporium.com/) (James Hastings-Trew), via threex.planets. Earth and Moon maps: NASA (via the three.js examples). Everything else (Sun, supernova, nebula, black hole, comet tails, spacecraft) is procedural.
 
-```bash
-npm run verify:content
-```
+## Stack
 
-## 🛠 Tech Stack
-
-* **Vite** — Build tool
-* **Tailwind CSS v4** — CSS-first styling
-* **Three.js** — Procedural WebGL objects and shaders
-* **GSAP + ScrollTrigger** — Scroll timelines and object states
-* **Lenis** — Smooth scrolling
-
-## 📝 Key Decisions
-
-1. **No React/Framework**: Built with Vanilla JS to keep the bundle as small as possible and maximize performance on the Netlify free tier.
-2. **Anchor-Based 3D**: Instead of a complex 3D coordinate system, the 3D canvas sits behind the DOM and maps objects directly to CSS layout blocks (`getBoundingClientRect`). This guarantees the 3D never ruins text legibility.
-3. **Adaptive Quality**: The WebGL scene monitors FPS and automatically drops pixel ratio or disables effects if performance suffers.
-4. **Accessibility First**: Phone numbers are hidden from static HTML (anti-scraping) but assemble on click. Reduced motion is honored. Fallback CSS gradients appear if WebGL fails.
+Vite · Three.js · GSAP ScrollTrigger · Lenis · Tailwind CSS v4 · vanilla JS

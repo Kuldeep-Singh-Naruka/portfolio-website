@@ -23,6 +23,7 @@ const SLIDE_TINTS = {
   'skill-concepts': '#f7f3f0',
   overview:       '#f0ebe5',
   projects:       '#e9e5e4',
+  'projects-intro': '#efe8e2',
   experience:     '#f5eee6',
   education:      '#f7f3f0',
   contact:        '#e1d6d1',
@@ -54,7 +55,7 @@ export async function initScroll(prefersReduced) {
   window.__lenis = lenis;
 
   // ─── Per-section tint triggers ─────────────────────────────────────────────
-  const sections = document.querySelectorAll('.section-wrap, [data-slide-index]');
+  const sections = document.querySelectorAll('.section-wrap, [data-slide-index], #projects-intro');
 
   sections.forEach((el) => {
     const id = el.id || el.closest('[id]')?.id;
@@ -125,8 +126,6 @@ function applyTint(id, tintEl) {
 
 function setTint(tintEl, color) {
   if (!tintEl) return;
-  // Night mode handled by CSS; only change when in day mode
-  if (!document.body.classList.contains('night')) {
-    tintEl.style.backgroundColor = color;
-  }
+  // Night mode overrides this via CSS (!important), so always record the tint
+  tintEl.style.backgroundColor = color;
 }

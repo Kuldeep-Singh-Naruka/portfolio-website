@@ -22,6 +22,13 @@ const ROOT = path.join(__dirname, '..');
 // ─── Strings to verify (derived from content.js resume) ─────────────────────
 // These are exact substrings that must appear in the built HTML AND be visible.
 const MUST_CONTAIN = [
+  // RecallOps
+  'RecallOps',
+  'Graph Hacks hackathon by WeMakeDevs and FalkorDB',
+  'semantic, episodic, and procedural agent memory',
+  'atomic, exactly-once Cypher updates',
+  'FalkorDB (Graph Database)',
+
   // Summary
   'Backend Engineer with 4+ years',
   'Generative AI and Agentic AI',
@@ -195,7 +202,7 @@ async function main() {
 
   // ─── Playwright live check ─────────────────────────────────────────────────
   console.log('\n🎭 Running Playwright checks...');
-  const browser = await chromium.launch();
+  const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
   await page.emulateMedia({ reducedMotion: 'reduce' });
 

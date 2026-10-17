@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" class="custom-cursor">
+<html lang="en" class="night">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,8 +36,27 @@
       "https://linkedin.com/in/kuldeep-singh-99b204280",
       "https://github.com/Kuldeep-Singh-Naruka"
     ],
-    "knowsAbout": ["Python","FastAPI","LangGraph","LangChain","Node.js","PostgreSQL","MongoDB","AWS","Docker","GenAI","RAG","Agentic AI","REST APIs","Payments"]
+    "knowsAbout": ["Python","FastAPI","LangGraph","LangChain","Node.js","PostgreSQL","MongoDB","AWS","Docker","GenAI","RAG","Agentic AI","Multi-Agent Systems","FalkorDB","REST APIs","Payments"]
   }
+  </script>
+
+  <meta name="theme-color" content="#05070d" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f5eee6" media="(prefers-color-scheme: light)">
+
+  <!-- Apply saved theme / 3D / motion before first paint (no flash) -->
+  <script>
+    (function () {
+      var s = {}; try { s = JSON.parse(localStorage.getItem('space-settings')) || {}; } catch (e) {}
+      var h = document.documentElement, mm = function (q) { return window.matchMedia && matchMedia(q).matches; };
+      var dark = s.theme ? s.theme === 'dark' : mm('(prefers-color-scheme: dark)');
+      var low = (navigator.hardwareConcurrency || 8) <= 4 || innerWidth < 768;
+      var three = s.three || (low ? 'lite' : 'full');
+      h.classList.toggle('night', dark);
+      h.classList.toggle('three-off', three === 'off');
+      h.classList.toggle('three-lite', three === 'lite');
+      h.classList.toggle('reduced-motion', s.motion ? s.motion === 'reduced' : mm('(prefers-reduced-motion: reduce)'));
+      h.dataset.theme = dark ? 'dark' : 'light';
+    })();
   </script>
 
   <link rel="stylesheet" href="/src/styles/main.css">
@@ -46,13 +65,16 @@
   <!-- Source comment for curious visitors -->
   <!-- Built by hand. If you're reading this, let's talk. artateight@gmail.com -->
 
+<body>
+  <!-- Built by hand. If you're reading this, let's talk. artateight@gmail.com -->
+
   <a class="skip-link" href="#main-content">Skip to content</a>
 
   <!-- Fixed tint background (behind canvas) -->
   <div id="slide-tint" aria-hidden="true"></div>
 
-  <!-- WebGL Canvas (decorative, aria-hidden) -->
-  <canvas id="orrery-canvas" aria-hidden="true"></canvas>
+  <!-- WebGL space scene (decorative) -->
+  <canvas id="space-canvas" aria-hidden="true"></canvas>
 
   <!-- Fixed header -->
   <header id="site-header" role="banner">
@@ -64,87 +86,85 @@
       <a href="#contact">Contact</a>
     </nav>
     <div class="header-controls">
-      <button id="night-toggle" class="icon-btn" aria-label="Toggle night mode" aria-pressed="false">Day</button>
-      <button id="three-toggle" class="icon-btn" aria-label="Toggle 3D scene" aria-pressed="true">3D On</button>
-      <button id="palette-open" class="icon-btn" aria-label="Open command palette" aria-haspopup="dialog"><kbd id="palette-kbd">⌘K</kbd></button>
+      <div class="settings-wrap">
+        <button id="settings-open" class="icon-btn icon-only" aria-label="Display settings" aria-haspopup="true" aria-expanded="false" aria-controls="settings-panel"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="12" cy="12" r="5.2" fill="none" stroke="currentColor" stroke-width="1.5"/><ellipse cx="12" cy="12" rx="10.5" ry="3.6" fill="none" stroke="currentColor" stroke-width="1.5" transform="rotate(-20 12 12)"/></svg><span class="btn-text">View</span></button>
+        <div id="settings-panel" role="group" aria-label="Display settings" hidden>
+          <div class="seg-row">
+            <span class="seg-label">Theme</span>
+            <div class="seg" role="group" aria-label="Theme">
+              <button type="button" data-set="theme" data-val="dark" aria-pressed="false">Dark</button>
+              <button type="button" data-set="theme" data-val="light" aria-pressed="false">Light</button>
+              <button type="button" data-set="theme" data-val="auto" aria-pressed="false">Auto</button>
+            </div>
+          </div>
+          <div class="seg-row">
+            <span class="seg-label">3D</span>
+            <div class="seg" role="group" aria-label="3D experience">
+              <button type="button" data-set="three" data-val="full" aria-pressed="false">Full</button>
+              <button type="button" data-set="three" data-val="lite" aria-pressed="false">Lite</button>
+              <button type="button" data-set="three" data-val="off" aria-pressed="false">Off</button>
+            </div>
+          </div>
+          <div class="seg-row">
+            <span class="seg-label">Motion</span>
+            <div class="seg" role="group" aria-label="Motion">
+              <button type="button" data-set="motion" data-val="full" aria-pressed="false">Full</button>
+              <button type="button" data-set="motion" data-val="reduced" aria-pressed="false">Reduced</button>
+            </div>
+          </div>
+          <p class="seg-note" id="three-auto-note">3D quality was picked for this device.</p>
+        </div>
+      </div>
+      <button id="palette-open" class="icon-btn" aria-label="Open command palette" aria-haspopup="dialog"><kbd id="palette-kbd">Ctrl K</kbd></button>
     </div>
   </header>
 
   <!-- Slide counter (fixed, visible during skills tour) -->
   <div id="slide-counter" aria-live="polite" aria-atomic="true">01/08</div>
 
-  <!-- Main content -->
   <main id="main-content">
 
-    <!-- ═══════════════════════════════════════════════════════
-         A. HERO
-    ═══════════════════════════════════════════════════════ -->
-    <section id="hero" class="section-wrap" aria-labelledby="hero-name">
-      <!-- Sun object slot (right-side, behind text) -->
-      <div class="skill-object-wrap" style="position:absolute; inset:0; pointer-events:none; z-index:1; min-height:unset; cursor:default;" aria-hidden="true">
-        <div class="anchor" data-anchor="sun" data-object="sun" style="position:relative; width:100%; height:100%;"></div>
-        <div class="object-fallback" aria-hidden="true">
-          <img src="/fallback/sun.png" alt="" style="position:absolute; right:5vw; top:10vh; width:38vmin; height:38vmin; object-fit: contain;">
-        </div>
-      </div>
-
-      <!-- Text content above the sun -->
-      <div class="hero-text-wrap" style="position:relative; z-index:2; max-width:1100px; margin:0 auto; padding:0 2rem;">
-        <!-- Mono label -->
+    <!-- ═══ A. HERO — the Sun ═══════════════════════════════════════════ -->
+    <section id="hero" class="section-wrap" data-stage aria-labelledby="hero-name">
+      <div class="body-slot hero-sun" data-body="sun" data-label="The Sun · drag to rotate" aria-hidden="true"><img class="still still-d" src="/stills/sun-dark.webp" alt="" loading="lazy" decoding="async"><img class="still still-l" src="/stills/sun-light.webp" alt="" loading="lazy" decoding="async"></div>
+      <div class="hero-text-wrap">
         <p class="label-mono" style="margin-bottom:1.5rem;">// Jaipur, Rajasthan, India</p>
-
-        <!-- H1 lockup -->
-        <h1 id="hero-name" class="display-huge" style="margin:0; color:var(--color-ink);" aria-label="Kuldeep Singh">
+        <h1 id="hero-name" class="display-huge" aria-label="Kuldeep Singh">
           <span class="hero-name-display" aria-hidden="true">Kuldeep Singh</span>
         </h1>
-
-        <p class="display-large" style="margin:0.5rem 0 1.5rem; color:var(--color-ink-secondary); font-weight:300;">
-          Backend Engineer – GenAI &amp; Agentic AI
-        </p>
-
-        <!-- Hero statement -->
-        <p class="hero-statement" style="font-family:var(--font-display); font-size:clamp(1.1rem,2vw,1.5rem); font-weight:300; color:var(--color-ink-secondary); max-width:640px; line-height:1.55; margin:0 0 3rem;">
+        <p class="display-large hero-role">Backend Engineer – GenAI &amp; Agentic AI</p>
+        <p class="hero-statement">
           Systems that hold under load,<br>
           agents that reason through uncertainty,<br>
           payments that clear without drama.
         </p>
-
-        <!-- CTAs -->
-        <div style="display:flex; flex-wrap:wrap; gap:1rem; margin-bottom:4rem;">
+        <div class="cta-row">
           <a href="#projects" class="cta-primary">View projects</a>
           <a href="/resume/Kuldeep_Singh_Resume.pdf" class="cta-ghost" download>Download resume</a>
           <a href="mailto:artateight@gmail.com" class="cta-ghost">Say hello</a>
         </div>
       </div>
+      <p class="scroll-hint label-mono" aria-hidden="true">scroll to fly outward ↓</p>
     </section>
 
-
-    <!-- ═══════════════════════════════════════════════════════
-         C. PROFESSIONAL SUMMARY
-    ═══════════════════════════════════════════════════════ -->
-    <section id="summary" class="section-wrap" aria-labelledby="summary-heading">
-      <div style="max-width:900px; margin:0 auto; padding:6rem 2rem;">
+    <!-- ═══ B. SUMMARY — the Moon ════════════════════════════════════════ -->
+    <section id="summary" class="section-wrap split" data-stage aria-labelledby="summary-heading">
+      <div class="body-slot" data-body="moon" data-label="The Moon · drag to rotate" aria-hidden="true"><img class="still still-d" src="/stills/moon-dark.webp" alt="" loading="lazy" decoding="async"><img class="still still-l" src="/stills/moon-light.webp" alt="" loading="lazy" decoding="async"></div>
+      <div class="split-text">
         <h2 id="summary-heading" class="label-mono" style="margin-bottom:2rem;">Professional Summary</h2>
         <p class="summary-text" id="summary-para">
-          Backend Engineer with 4+ years of experience building scalable REST APIs and backend systems with Python, Node.js, Express.js, PHP, MySQL, PostgreSQL, and MongoDB, now focused on Generative AI and Agentic AI. Builds LLM-powered applications with LangChain and LangGraph: multi-step AI agents, Retrieval-Augmented Generation (RAG), vector search with ChromaDB, structured LLM outputs, and LLM observability with LangSmith, served through FastAPI. Brings production experience from a fantasy sports platform with 200,000+ users, including payment systems (Finix, 3DS2, ACH), webhooks, event-driven processing, idempotent transactions, and fraud prevention that reduced false positives by 30%.
+          Backend Engineer with 4+ years of experience building scalable REST APIs and backend systems with Python, Node.js, Express.js, PHP, MySQL, PostgreSQL, and MongoDB, now focused on Generative AI and Agentic AI. Builds LLM-powered applications with LangChain and LangGraph: multi-step AI agents, multi-agent systems with graph-based memory (FalkorDB), Retrieval-Augmented Generation (RAG), vector search with ChromaDB, structured LLM outputs, and LLM observability with LangSmith, served through FastAPI. Brings production experience from a fantasy sports platform with 200,000+ users, including payment systems (Finix, 3DS2, ACH), webhooks, event-driven processing, idempotent transactions, and fraud prevention that reduced false positives by 30%.
         </p>
       </div>
     </section>
 
-    <!-- ═══════════════════════════════════════════════════════
-         D. TECHNICAL SKILLS — 8 slides
-    ═══════════════════════════════════════════════════════ -->
+    <!-- ═══ C. TECHNICAL SKILLS — one planet per slide ═══════════════════ -->
     <section id="skills" aria-label="Technical Skills">
 
       <!-- Slide 01: Generative AI & LLMs -->
-      <div id="skill-gen-ai" class="skill-slide section-wrap" data-slide-index="01" data-slide-total="08">
+      <div id="skill-gen-ai" class="skill-slide section-wrap" data-stage data-slide-index="01" data-slide-total="08">
         <div class="skill-sticky" data-tint="#f7f3f0">
-          <div class="skill-object-wrap" aria-hidden="true">
-            <div class="anchor" data-anchor="gen-ai" data-object="rag-cloud"></div>
-            <div class="object-fallback" aria-hidden="true">
-          <img src="/fallback/rag-cloud.png" alt="" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15)); max-width: 80vmin;" loading="lazy">
-        </div>
-          </div>
+          <div class="body-slot" data-body="jupiter" data-label="Jupiter · drag to rotate" aria-hidden="true"><img class="still still-d" src="/stills/jupiter-dark.webp" alt="" loading="lazy" decoding="async"><img class="still still-l" src="/stills/jupiter-light.webp" alt="" loading="lazy" decoding="async"></div>
           <div class="skill-content">
             <div class="ghost-numeral" aria-hidden="true">01</div>
             <p class="label-mono" style="margin-bottom:0.5rem;">// 01 — technical skills</p>
@@ -164,22 +184,19 @@
       </div>
 
       <!-- Slide 02: Agentic AI -->
-      <div id="skill-agentic-ai" class="skill-slide section-wrap" data-slide-index="02" data-slide-total="08">
+      <div id="skill-agentic-ai" class="skill-slide section-wrap" data-stage data-slide-index="02" data-slide-total="08">
         <div class="skill-sticky" data-tint="#f5eee6">
-          <div class="skill-object-wrap" aria-hidden="true">
-            <div class="anchor" data-anchor="agentic-ai" data-object="constellation"></div>
-            <div class="object-fallback" aria-hidden="true">
-          <img src="/fallback/constellation.png" alt="" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15)); max-width: 80vmin;" loading="lazy">
-        </div>
-          </div>
+          <div class="body-slot" data-body="saturn" data-label="Saturn · drag to rotate" aria-hidden="true"><img class="still still-d" src="/stills/saturn-dark.webp" alt="" loading="lazy" decoding="async"><img class="still still-l" src="/stills/saturn-light.webp" alt="" loading="lazy" decoding="async"></div>
           <div class="skill-content">
             <div class="ghost-numeral" aria-hidden="true">02</div>
             <p class="label-mono" style="margin-bottom:0.5rem;">// 02 — technical skills</p>
             <h2 class="display-slide" style="margin:0 0 0.5rem;">Agentic AI</h2>
-            <p class="label-mono" style="margin-bottom:1.5rem;">orbit: 7 nodes</p>
+            <p class="label-mono" style="margin-bottom:1.5rem;">orbit: 9 nodes</p>
             <ul class="skill-tags" role="list" aria-label="Agentic AI skills">
               <li class="skill-tag">AI Agents</li>
+              <li class="skill-tag">Multi-Agent Systems</li>
               <li class="skill-tag">Multi-Step Agent Workflows</li>
+              <li class="skill-tag">Agent Memory (Semantic, Episodic, Procedural)</li>
               <li class="skill-tag">LangGraph (Stateful Agent Graphs)</li>
               <li class="skill-tag">LangChain</li>
               <li class="skill-tag">LangSmith (Tracing &amp; Observability)</li>
@@ -191,23 +208,19 @@
       </div>
 
       <!-- Slide 03: Languages -->
-      <div id="skill-languages" class="skill-slide section-wrap" data-slide-index="03" data-slide-total="08">
+      <div id="skill-languages" class="skill-slide section-wrap" data-stage data-slide-index="03" data-slide-total="08">
         <div class="skill-sticky" data-tint="#e9e5e4">
-          <div class="skill-object-wrap" aria-hidden="true">
-            <div class="anchor" data-anchor="languages" data-object="planet-moons"></div>
-            <div class="object-fallback" aria-hidden="true">
-          <img src="/fallback/planet-moons.png" alt="" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15)); max-width: 80vmin;" loading="lazy">
-        </div>
-          </div>
+          <div class="body-slot" data-body="mercury" data-label="Mercury · drag to rotate" aria-hidden="true"><img class="still still-d" src="/stills/mercury-dark.webp" alt="" loading="lazy" decoding="async"><img class="still still-l" src="/stills/mercury-light.webp" alt="" loading="lazy" decoding="async"></div>
           <div class="skill-content">
             <div class="ghost-numeral" aria-hidden="true">03</div>
             <p class="label-mono" style="margin-bottom:0.5rem;">// 03 — technical skills</p>
             <h2 class="display-slide" style="margin:0 0 0.5rem;">Languages</h2>
-            <p class="label-mono" style="margin-bottom:1.5rem;">orbit: 4 moons</p>
+            <p class="label-mono" style="margin-bottom:1.5rem;">orbit: 5 moons</p>
             <ul class="skill-tags" role="list" aria-label="Programming languages">
               <li class="skill-tag">Python</li>
               <li class="skill-tag">JavaScript</li>
               <li class="skill-tag">SQL</li>
+              <li class="skill-tag">Cypher</li>
               <li class="skill-tag">PHP</li>
             </ul>
           </div>
@@ -215,14 +228,9 @@
       </div>
 
       <!-- Slide 04: Backend -->
-      <div id="skill-backend" class="skill-slide section-wrap" data-slide-index="04" data-slide-total="08">
+      <div id="skill-backend" class="skill-slide section-wrap" data-stage data-slide-index="04" data-slide-total="08">
         <div class="skill-sticky" data-tint="#ded8da">
-          <div class="skill-object-wrap" aria-hidden="true">
-            <div class="anchor" data-anchor="backend" data-object="ringed-planet"></div>
-            <div class="object-fallback" aria-hidden="true">
-          <img src="/fallback/ringed-planet.png" alt="" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15)); max-width: 80vmin;" loading="lazy">
-        </div>
-          </div>
+          <div class="body-slot" data-body="earth" data-label="Earth · drag to rotate" aria-hidden="true"><img class="still still-d" src="/stills/earth-dark.webp" alt="" loading="lazy" decoding="async"><img class="still still-l" src="/stills/earth-light.webp" alt="" loading="lazy" decoding="async"></div>
           <div class="skill-content">
             <div class="ghost-numeral" aria-hidden="true">04</div>
             <p class="label-mono" style="margin-bottom:0.5rem;">// 04 — technical skills</p>
@@ -243,39 +251,30 @@
       </div>
 
       <!-- Slide 05: Databases -->
-      <div id="skill-databases" class="skill-slide section-wrap" data-slide-index="05" data-slide-total="08">
+      <div id="skill-databases" class="skill-slide section-wrap" data-stage data-slide-index="05" data-slide-total="08">
         <div class="skill-sticky" data-tint="#d3c8cc">
-          <div class="skill-object-wrap" aria-hidden="true">
-            <div class="anchor" data-anchor="databases" data-object="strata-planet"></div>
-            <div class="object-fallback" aria-hidden="true">
-          <img src="/fallback/strata-planet.png" alt="" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15)); max-width: 80vmin;" loading="lazy">
-        </div>
-          </div>
+          <div class="body-slot" data-body="mars" data-label="Mars · drag to rotate" aria-hidden="true"><img class="still still-d" src="/stills/mars-dark.webp" alt="" loading="lazy" decoding="async"><img class="still still-l" src="/stills/mars-light.webp" alt="" loading="lazy" decoding="async"></div>
           <div class="skill-content">
             <div class="ghost-numeral" aria-hidden="true">05</div>
             <p class="label-mono" style="margin-bottom:0.5rem;">// 05 — technical skills</p>
             <h2 class="display-slide" style="margin:0 0 0.5rem;">Databases</h2>
-            <p class="label-mono" style="margin-bottom:1.5rem;">orbit: 5 strata</p>
+            <p class="label-mono" style="margin-bottom:1.5rem;">orbit: 6 strata</p>
             <ul class="skill-tags" role="list" aria-label="Database technologies">
               <li class="skill-tag">PostgreSQL</li>
               <li class="skill-tag">MySQL</li>
               <li class="skill-tag">MongoDB</li>
               <li class="skill-tag">Redis</li>
               <li class="skill-tag">ChromaDB (Vector Database)</li>
+              <li class="skill-tag">FalkorDB (Graph Database)</li>
             </ul>
           </div>
         </div>
       </div>
 
       <!-- Slide 06: DevOps & Tools -->
-      <div id="skill-devops" class="skill-slide section-wrap" data-slide-index="06" data-slide-total="08">
+      <div id="skill-devops" class="skill-slide section-wrap" data-stage data-slide-index="06" data-slide-total="08">
         <div class="skill-sticky" data-tint="#e9e5e4">
-          <div class="skill-object-wrap" aria-hidden="true">
-            <div class="anchor" data-anchor="devops" data-object="satellite"></div>
-            <div class="object-fallback" aria-hidden="true">
-          <img src="/fallback/satellite.png" alt="" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15)); max-width: 80vmin;" loading="lazy">
-        </div>
-          </div>
+          <div class="body-slot" data-body="uranus" data-label="Uranus · drag to rotate" aria-hidden="true"><img class="still still-d" src="/stills/uranus-dark.webp" alt="" loading="lazy" decoding="async"><img class="still still-l" src="/stills/uranus-light.webp" alt="" loading="lazy" decoding="async"></div>
           <div class="skill-content">
             <div class="ghost-numeral" aria-hidden="true">06</div>
             <p class="label-mono" style="margin-bottom:0.5rem;">// 06 — technical skills</p>
@@ -296,14 +295,9 @@
       </div>
 
       <!-- Slide 07: Payments & Integrations -->
-      <div id="skill-payments" class="skill-slide section-wrap" data-slide-index="07" data-slide-total="08">
+      <div id="skill-payments" class="skill-slide section-wrap" data-stage data-slide-index="07" data-slide-total="08">
         <div class="skill-sticky" data-tint="#f5eee6">
-          <div class="skill-object-wrap" aria-hidden="true">
-            <div class="anchor" data-anchor="payments" data-object="orbit-planet"></div>
-            <div class="object-fallback" aria-hidden="true">
-          <img src="/fallback/orbit-planet.png" alt="" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15)); max-width: 80vmin;" loading="lazy">
-        </div>
-          </div>
+          <div class="body-slot" data-body="neptune" data-label="Neptune · drag to rotate" aria-hidden="true"><img class="still still-d" src="/stills/neptune-dark.webp" alt="" loading="lazy" decoding="async"><img class="still still-l" src="/stills/neptune-light.webp" alt="" loading="lazy" decoding="async"></div>
           <div class="skill-content">
             <div class="ghost-numeral" aria-hidden="true">07</div>
             <p class="label-mono" style="margin-bottom:0.5rem;">// 07 — technical skills</p>
@@ -323,14 +317,9 @@
       </div>
 
       <!-- Slide 08: Concepts -->
-      <div id="skill-concepts" class="skill-slide section-wrap" data-slide-index="08" data-slide-total="08">
+      <div id="skill-concepts" class="skill-slide section-wrap" data-stage data-slide-index="08" data-slide-total="08">
         <div class="skill-sticky" data-tint="#f7f3f0">
-          <div class="skill-object-wrap" aria-hidden="true">
-            <div class="anchor" data-anchor="concepts" data-object="hash-ring"></div>
-            <div class="object-fallback" aria-hidden="true">
-          <img src="/fallback/hash-ring.png" alt="" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15)); max-width: 80vmin;" loading="lazy">
-        </div>
-          </div>
+          <div class="body-slot" data-body="belt" data-label="Asteroid belt · drag to rotate" aria-hidden="true"><img class="still still-d" src="/stills/belt-dark.webp" alt="" loading="lazy" decoding="async"><img class="still still-l" src="/stills/belt-light.webp" alt="" loading="lazy" decoding="async"></div>
           <div class="skill-content">
             <div class="ghost-numeral" aria-hidden="true">08</div>
             <p class="label-mono" style="margin-bottom:0.5rem;">// 08 — technical skills</p>
@@ -347,36 +336,78 @@
         </div>
       </div>
 
+    
     </section><!-- /skills -->
 
-    <!-- ═══════════════════════════════════════════════════════
-         E. OVERVIEW BEAT
-    ═══════════════════════════════════════════════════════ -->
-    <section id="overview" class="section-wrap" aria-label="Skills overview — full system">
-      <div class="anchor" data-anchor="overview" data-object="orrery-overview" aria-hidden="true"></div>
-      <div style="position:relative; z-index:2; text-align:center; padding:2rem;">
+    <!-- ═══ D. OVERVIEW — the whole system ═══════════════════════════════ -->
+    <section id="overview" class="section-wrap split" data-stage aria-label="Skills overview — full system">
+      <div class="split-text">
         <p class="label-mono" style="margin-bottom:1rem;">// full system</p>
-        <h2 class="display-huge" id="overview-word" aria-label="System">SYSTEM</h2>
-        <p style="max-width:480px; margin:1.5rem auto 0; color:var(--color-ink-secondary); font-size:14px; line-height:1.7;">
-          Eight domains, one engineer. Hover any body to navigate.
-        </p>
+        <h2 class="display-huge overview-word" id="overview-word" aria-label="System">SYSTEM</h2>
+        <p class="overview-copy">Eight domains, one engineer. Hover any body to navigate.</p>
+        <nav class="orrery-legend" aria-label="Jump to a skill">
+          <a href="#skill-languages"><i style="--c:#9a8f86"></i>Mercury · Languages</a>
+          <a href="#skill-backend"><i style="--c:#4f7fc2"></i>Earth · Backend</a>
+          <a href="#skill-databases"><i style="--c:#c1623f"></i>Mars · Databases</a>
+          <a href="#skill-concepts"><i style="--c:#8c8073"></i>Belt · Concepts</a>
+          <a href="#skill-gen-ai"><i style="--c:#c9a27a"></i>Jupiter · GenAI &amp; LLMs</a>
+          <a href="#skill-agentic-ai"><i style="--c:#d8c08b"></i>Saturn · Agentic AI</a>
+          <a href="#skill-devops"><i style="--c:#8fd0dc"></i>Uranus · DevOps &amp; Tools</a>
+          <a href="#skill-payments"><i style="--c:#4a6be0"></i>Neptune · Payments</a>
+        </nav>
       </div>
+      <div class="body-slot orrery-slot" data-body="orrery" data-label="Solar system · hover a planet · click to jump" aria-hidden="true"><img class="still still-d" src="/stills/orrery-dark.webp" alt="" loading="lazy" decoding="async"><img class="still still-l" src="/stills/orrery-light.webp" alt="" loading="lazy" decoding="async"></div>
     </section>
 
-    <!-- ═══════════════════════════════════════════════════════
-         F. AI PROJECTS
-    ═══════════════════════════════════════════════════════ -->
+    <!-- ═══ E. AI PROJECTS ═══════════════════════════════════════════════ -->
     <section id="projects" class="section-wrap" aria-labelledby="projects-heading">
-      <div style="max-width:1100px; margin:0 auto; padding:6rem 2rem 0;">
-        <p class="label-mono" style="margin-bottom:0.75rem;">// 09 — ai projects</p>
-        <h2 id="projects-heading" class="display-huge" style="margin:0 0 5rem;">AI Projects</h2>
+      <div id="projects-intro" class="projects-intro" data-stage>
+        <div class="projects-intro-sticky">
+          <div class="split-text">
+            <p class="label-mono" style="margin-bottom:0.75rem;">// 09 — ai projects</p>
+            <h2 id="projects-heading" class="display-huge" style="margin:0 0 1.5rem;">AI Projects</h2>
+            <p class="intro-copy">What came out of all that: three agentic systems, built end to end.</p>
+          </div>
+          <div class="body-slot" data-body="supernova" data-label="Supernova · scroll to detonate" aria-hidden="true"><img class="still still-d" src="/stills/supernova-dark.webp" alt="" loading="lazy" decoding="async"><img class="still still-l" src="/stills/supernova-light.webp" alt="" loading="lazy" decoding="async"></div>
+        </div>
       </div>
 
-      <!-- Project 1: API Integration Monitor Agent -->
-      <article id="project-api-monitor" class="project-slide" aria-labelledby="proj1-title">
+      <!-- Project 1: RecallOps -->
+      <article id="project-recallops" class="project-slide" data-stage aria-labelledby="proj0-title">
         <div class="project-sticky">
           <div class="project-text-col">
-            <p class="label-mono" style="margin-bottom:0.5rem;">01 / Agentic AI</p>
+            <p class="label-mono" style="margin-bottom:0.5rem;">01 / Multi-Agent AI</p>
+            <h3 id="proj0-title" style="font-family:var(--font-display); font-size:clamp(1.8rem,3.5vw,3rem); font-weight:300; margin:0 0 0.25rem; line-height:1.15;">RecallOps – Multi-Agent Incident Response (Graph Memory)</h3>
+            <p class="tech-stack">Python · LangGraph · FalkorDB · Cypher · Groq · Streamlit</p>
+            <a href="https://github.com/Kuldeep-Singh-Naruka/recallops" target="_blank" rel="noreferrer" class="ink-link" style="font-size:13px;">View on GitHub ↗</a>
+            <ul style="margin:2rem 0 0; padding-left:0; list-style:none; display:flex; flex-direction:column; gap:1rem;">
+              <li style="display:flex; gap:0.75rem;">
+                <span style="color:var(--color-coral); flex-shrink:0; margin-top:0.1rem;">—</span>
+                <span>Built a multi-agent incident-response system for the Graph Hacks hackathon by WeMakeDevs and FalkorDB (Oct 2026): a LangGraph pipeline of 5 agents (triage, parallel dependency and memory scouts, investigator, resolver) that shares one memory in the FalkorDB graph database.</span>
+              </li>
+              <li style="display:flex; gap:0.75rem;">
+                <span style="color:var(--color-coral); flex-shrink:0; margin-top:0.1rem;">—</span>
+                <span>Modeled semantic, episodic, and procedural agent memory as a graph (service map, incident steps, fixes with success/fail scores); agents recall past fixes up to 3 dependency hops away with Cypher and rank them by track record, learning from human &quot;fix worked / didn't work&quot; feedback.</span>
+              </li>
+              <li style="display:flex; gap:0.75rem;">
+                <span style="color:var(--color-coral); flex-shrink:0; margin-top:0.1rem;">—</span>
+                <span>Made concurrent writes safe with atomic, exactly-once Cypher updates: a 50-thread stress test lost 0 updates vs. 48 of 50 with naive read-modify-write; covered the system with 35 automated tests.</span>
+              </li>
+              <li style="display:flex; gap:0.75rem;">
+                <span style="color:var(--color-coral); flex-shrink:0; margin-top:0.1rem;">—</span>
+                <span>Added per-tenant graph isolation, Groq LLM calls with JSON-schema structured output, guardrails enforced in code (never repeat a failed fix, escalate after 3 failures), and a Streamlit UI with persistent chat memory.</span>
+              </li>
+            </ul>
+          </div>
+          <div class="body-slot" data-body="station" data-label="Space station · drag to rotate" aria-hidden="true"><img class="still still-d" src="/stills/station-dark.webp" alt="" loading="lazy" decoding="async"><img class="still still-l" src="/stills/station-light.webp" alt="" loading="lazy" decoding="async"></div>
+        </div>
+      </article>
+
+      <!-- Project 2: API Integration Monitor Agent -->
+      <article id="project-api-monitor" class="project-slide" data-stage aria-labelledby="proj1-title">
+        <div class="project-sticky">
+          <div class="project-text-col">
+            <p class="label-mono" style="margin-bottom:0.5rem;">02 / Agentic AI</p>
             <h3 id="proj1-title" style="font-family:var(--font-display); font-size:clamp(1.8rem,3.5vw,3rem); font-weight:300; margin:0 0 0.25rem; line-height:1.15;">API Integration Monitor Agent</h3>
             <p class="tech-stack">Python · FastAPI · LangGraph · LangChain · PostgreSQL · ChromaDB · LangSmith</p>
             <a href="https://github.com/Kuldeep-Singh-Naruka/API-Integration-Monitor-Agent" target="_blank" rel="noreferrer" class="ink-link" style="font-size:13px;">View on GitHub ↗</a>
@@ -399,20 +430,15 @@
               </li>
             </ul>
           </div>
-          <div class="skill-object-wrap" aria-hidden="true" style="align-self:center;">
-            <div class="anchor" data-anchor="api-monitor" data-object="flight-route" data-waypoints="fetch,compare,summarize,classify,suggest fix"></div>
-            <div class="object-fallback" aria-hidden="true">
-          <img src="/fallback/flight-route.png" alt="" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15)); max-width: 80vmin;" loading="lazy">
-        </div>
-          </div>
+          <div class="body-slot" data-body="probe" data-label="Space probe · drag to rotate" aria-hidden="true"><img class="still still-d" src="/stills/probe-dark.webp" alt="" loading="lazy" decoding="async"><img class="still still-l" src="/stills/probe-light.webp" alt="" loading="lazy" decoding="async"></div>
         </div>
       </article>
 
-      <!-- Project 2: HireFlow -->
-      <article id="project-hireflow" class="project-slide" aria-labelledby="proj2-title">
+      <!-- Project 3: HireFlow -->
+      <article id="project-hireflow" class="project-slide" data-stage aria-labelledby="proj2-title">
         <div class="project-sticky">
           <div class="project-text-col">
-            <p class="label-mono" style="margin-bottom:0.5rem;">02 / LLM Pipeline</p>
+            <p class="label-mono" style="margin-bottom:0.5rem;">03 / LLM Pipeline</p>
             <h3 id="proj2-title" style="font-family:var(--font-display); font-size:clamp(1.8rem,3.5vw,3rem); font-weight:300; margin:0 0 0.25rem; line-height:1.15;">HireFlow – AI Candidate Screening &amp; Interview Intelligence</h3>
             <p class="tech-stack">Python · FastAPI · PostgreSQL · Groq · LangChain · React</p>
             <a href="https://github.com/Kuldeep-Singh-Naruka/HireFlow" target="_blank" rel="noreferrer" class="ink-link" style="font-size:13px;">View on GitHub ↗</a>
@@ -431,38 +457,26 @@
               </li>
             </ul>
           </div>
-          <div class="skill-object-wrap" aria-hidden="true" style="align-self:center;">
-            <div class="anchor" data-anchor="hireflow" data-object="flight-route" data-waypoints="Resumes &amp; job descriptions,Structured requirements &amp; profiles,Requirements matched to quoted evidence,Interview questions"></div>
-            <div class="object-fallback" aria-hidden="true">
-          <img src="/fallback/flight-route.png" alt="" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15)); max-width: 80vmin;" loading="lazy">
-        </div>
-          </div>
+          <div class="body-slot" data-body="telescope" data-label="Space telescope · drag to rotate" aria-hidden="true"><img class="still still-d" src="/stills/telescope-dark.webp" alt="" loading="lazy" decoding="async"><img class="still still-l" src="/stills/telescope-light.webp" alt="" loading="lazy" decoding="async"></div>
         </div>
       </article>
-
     </section><!-- /projects -->
 
-    <!-- ═══════════════════════════════════════════════════════
-         G. PROFESSIONAL EXPERIENCE
-    ═══════════════════════════════════════════════════════ -->
-    <section id="experience" class="section-wrap" aria-labelledby="exp-heading">
-      <div style="max-width:900px; margin:0 auto; padding:6rem 2rem;">
-        <p class="label-mono" style="margin-bottom:0.75rem;">// 10 — professional experience</p>
-        <h2 id="exp-heading" class="display-huge" style="margin:0 0 4rem;">Experience</h2>
-
-        <!-- Experience orbit anchor -->
-        <div class="anchor" data-anchor="exp-ring" data-object="exp-ring" aria-hidden="true" style="position:relative;"></div>
-
-        <div class="timeline">
+    <!-- ═══ F. EXPERIENCE — a comet's trajectory ═════════════════════════ -->
+    <section id="experience" class="section-wrap" data-stage aria-labelledby="exp-heading">
+      <div class="exp-grid">
+        <div class="exp-text">
+          <p class="label-mono" style="margin-bottom:0.75rem;">// 10 — professional experience</p>
+          <h2 id="exp-heading" class="display-huge" style="margin:0 0 4rem;">Experience</h2>
+          <div class="timeline">
 
           <!-- Role 1: Algoza Technologies -->
           <div class="timeline-role">
             <div class="timeline-dot current" aria-hidden="true"></div>
             <div style="display:flex; flex-wrap:wrap; gap:0.5rem 1.5rem; align-items:baseline; margin-bottom:0.5rem;">
               <h3 style="font-family:var(--font-display); font-size:1.75rem; font-weight:300; margin:0;">Senior Full Stack Developer</h3>
-              <span style="color:var(--color-plum); font-family:var(--font-mono); font-size:10px; letter-spacing:0.06em; text-transform:uppercase;">Present</span>
             </div>
-            <p style="font-family:var(--font-body); font-size:14px; color:var(--color-ink-secondary); margin:0 0 1.25rem;">Algoza Technologies Pvt. Ltd. &nbsp;·&nbsp; Oct 2024 – Present</p>
+            <p style="font-family:var(--font-body); font-size:14px; color:var(--color-ink-secondary); margin:0 0 1.25rem;">Algoza Technologies Pvt. Ltd. &nbsp;·&nbsp; Oct 2024 – Oct 2026</p>
             <ul style="padding-left:0; list-style:none; display:flex; flex-direction:column; gap:0.9rem;">
               <li style="display:flex; gap:0.75rem; font-size:15px; line-height:1.6;">
                 <span style="color:var(--color-coral); flex-shrink:0;">—</span>
@@ -539,33 +553,31 @@
           </div>
 
         </div><!-- /timeline -->
+        </div>
+        <div class="exp-visual">
+          <div class="exp-sticky"><div class="body-slot" data-body="comet" data-label="Comet · drag to spin" aria-hidden="true"><img class="still still-d" src="/stills/comet-dark.webp" alt="" loading="lazy" decoding="async"><img class="still still-l" src="/stills/comet-light.webp" alt="" loading="lazy" decoding="async"></div></div>
+        </div>
       </div>
     </section><!-- /experience -->
 
-    <!-- ═══════════════════════════════════════════════════════
-         H. EDUCATION
-    ═══════════════════════════════════════════════════════ -->
-    <section id="education" class="section-wrap" aria-labelledby="edu-heading">
-      <div style="max-width:900px; margin:0 auto; padding:4rem 2rem 6rem;">
+    <!-- ═══ G. EDUCATION — a nebula ══════════════════════════════════════ -->
+    <section id="education" class="section-wrap split" data-stage aria-labelledby="edu-heading">
+      <div class="split-text">
         <p class="label-mono" style="margin-bottom:0.75rem;">// 11 — education</p>
         <h2 id="edu-heading" class="display-slide" style="margin:0 0 0.5rem;">Education</h2>
-        <div class="anchor" data-anchor="education" data-object="pale-dot" aria-hidden="true" style="position:relative; display:inline-block;"></div>
         <p style="font-family:var(--font-display); font-size:1.75rem; font-weight:300; margin:1.5rem 0 0.25rem;">
           Bachelor of Arts (B.A.)
         </p>
         <p style="font-size:15px; color:var(--color-ink-secondary);">University of Rajasthan, Jaipur &nbsp;·&nbsp; 2020 – 2022</p>
       </div>
+      <div class="body-slot" data-body="nebula" data-label="Nebula · move your mouse" aria-hidden="true"><img class="still still-d" src="/stills/nebula-dark.webp" alt="" loading="lazy" decoding="async"><img class="still still-l" src="/stills/nebula-light.webp" alt="" loading="lazy" decoding="async"></div>
     </section><!-- /education -->
 
-    <!-- ═══════════════════════════════════════════════════════
-         I. CONTACT / FOOTER
-    ═══════════════════════════════════════════════════════ -->
-    <section id="contact" class="section-wrap" aria-labelledby="contact-heading">
-      <div style="max-width:1000px; margin:0 auto; padding:0 2rem 6rem;">
-        <!-- 3D anchor: pulsing beacon -->
-        <div class="anchor" data-anchor="contact" data-object="beacon" aria-hidden="true"></div>
-
-        <p class="label-mono" style="margin-bottom:1.5rem;">// let's build something</p>
+    <!-- ═══ H. CONTACT — a black hole ════════════════════════════════════ -->
+    <section id="contact" class="section-wrap" data-stage aria-labelledby="contact-heading">
+      <div class="contact-grid">
+        <div class="contact-text">
+          <p class="label-mono" style="margin-bottom:1.5rem;">// let's build something</p>
         <h2 id="contact-heading" class="display-huge" style="margin:0 0 2rem;">Kuldeep Singh</h2>
 
         <p style="font-family:var(--font-display); font-size:1.4rem; font-weight:300; color:var(--color-ink-secondary); max-width:520px; line-height:1.6; margin:0 0 3rem;">
@@ -596,14 +608,15 @@
           <a href="/resume/Kuldeep_Singh_Resume.pdf" class="cta-primary" download>Download resume</a>
           <a href="mailto:artateight@gmail.com" class="cta-ghost">Say hello</a>
         </div>
+        </div>
+        <div class="body-slot" data-body="blackhole" data-label="Black hole · move your mouse · drag to tilt" aria-hidden="true"><img class="still still-d" src="/stills/blackhole-dark.webp" alt="" loading="lazy" decoding="async"><img class="still still-l" src="/stills/blackhole-light.webp" alt="" loading="lazy" decoding="async"></div>
       </div>
 
-      <!-- Footer small print -->
-      <div style="border-top:1px solid rgba(28,34,38,0.1); margin-top:4rem; padding:2rem; display:flex; flex-wrap:wrap; gap:1rem; justify-content:space-between; align-items:center; font-family:var(--font-mono); font-size:10px; color:var(--color-ink-secondary); letter-spacing:0.04em;">
-        <span>© <span id="footer-year">2025</span> Kuldeep Singh</span>
+      <div class="site-footer">
+        <span>© <span id="footer-year">2026</span> Kuldeep Singh</span>
         <span id="build-info">build local</span>
         <span>Vite · Three.js · GSAP · Tailwind CSS v4 · Lenis</span>
-        <a href="view-source:https://kuldeep-singh-naruka.netlify.app/" class="ink-link" style="font-size:10px;">view source</a>
+        <span>Planet maps: <a class="ink-link" href="https://planetpixelemporium.com/" target="_blank" rel="noreferrer">Planet Pixel Emporium</a> · Earth &amp; Moon: NASA</span>
       </div>
     </section><!-- /contact -->
 
@@ -612,7 +625,7 @@
   <!-- Command palette -->
   <div id="palette-overlay" role="dialog" aria-modal="true" aria-label="Command palette" aria-hidden="true">
     <div id="palette-box">
-      <input id="palette-input" type="text" placeholder="Type a command..." autocomplete="off" spellcheck="false" aria-label="Command palette search">
+      <input id="palette-input" type="text" placeholder="Type a command…" autocomplete="off" spellcheck="false" aria-label="Command palette search">
       <div id="palette-results" role="listbox" aria-label="Commands"></div>
     </div>
   </div>
