@@ -1,15 +1,16 @@
 {
   "name": "portfolio-website",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "private": true,
   "type": "module",
-  "description": "Kuldeep Singh — Orrery portfolio. Backend Engineer, GenAI & Agentic AI.",
+  "description": "Kuldeep Singh — space portfolio. Backend Engineer, GenAI & Agentic AI.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
     "verify:content": "node scripts/verify-content.js",
-    "test:palette": "playwright test tests/palette.spec.js"
+    "stills": "node scripts/render-stills.mjs",
+    "test": "playwright test"
   },
   "repository": {
     "type": "git",

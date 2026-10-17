@@ -5,6 +5,7 @@ export default defineConfig({
   plugins: [tailwindcss()],
   build: {
     target: 'es2022',
+    chunkSizeWarningLimit: 650, // three.js is one ~580 KB chunk, lazy-loaded after first paint
     outDir: 'dist',
     rollupOptions: {
       output: {

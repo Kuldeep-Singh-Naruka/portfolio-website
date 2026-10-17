@@ -1,3 +1,5 @@
+import { settings } from '../settings/store.js';
+
 // ─── ui/palette.js ────────────────────────────────────────────────────────────
 // Command palette (Ctrl/Cmd+K or Ctrl+K on Windows).
 // Capture-phase listener beats Chrome address-bar shortcut.
@@ -18,8 +20,14 @@ const COMMANDS = [
   { label: 'Email me',         type: 'link', target: 'mailto:artateight@gmail.com' },
   { label: 'Download Resume',  type: 'action', action: 'resume' },
   { label: 'Reveal Phone',     type: 'action', action: 'phone' },
-  { label: 'Toggle Night Mode',type: 'action', action: 'night' },
-  { label: 'Toggle 3D Scene',  type: 'action', action: '3d' },
+  { label: 'Theme: Dark',      type: 'set', key: 'theme', val: 'dark' },
+  { label: 'Theme: Light',     type: 'set', key: 'theme', val: 'light' },
+  { label: 'Theme: Auto',      type: 'set', key: 'theme', val: 'auto' },
+  { label: '3D: Full',         type: 'set', key: 'three', val: 'full' },
+  { label: '3D: Lite',         type: 'set', key: 'three', val: 'lite' },
+  { label: '3D: Off',          type: 'set', key: 'three', val: 'off' },
+  { label: 'Motion: Full',     type: 'set', key: 'motion', val: 'full' },
+  { label: 'Motion: Reduced',  type: 'set', key: 'motion', val: 'reduced' },
 ];
 
 const SECRET = {
@@ -130,6 +138,8 @@ export function initPalette() {
       } else if (cmd.type === 'link') {
         // Handled by native <a> tag if clicked, but triggered here if via keyboard
         window.open(cmd.target, cmd.target.startsWith('mailto:') ? '_self' : '_blank', 'noopener,noreferrer');
+      } else if (cmd.type === 'set') {
+        settings.set(cmd.key, cmd.val);
       } else if (cmd.type === 'action') {
         if (cmd.action === 'resume') {
           const a = document.createElement('a');
@@ -138,10 +148,6 @@ export function initPalette() {
           a.click();
         } else if (cmd.action === 'phone') {
           window.__revealPhone?.();
-        } else if (cmd.action === 'night') {
-          window.__toggleNight?.();
-        } else if (cmd.action === '3d') {
-          document.getElementById('three-toggle')?.click();
         } else if (cmd.action === 'secret') {
           celebrate();
           setTimeout(() => {
@@ -232,25 +238,11 @@ function navTo(selector) {
   }
 }
 
-// ── Celebrate easter egg ──────────────────────────────────────────────────────
+// ── Easter egg: a supernova flash ────────────────────────────────────────────
 function celebrate() {
-  const container = Object.assign(document.createElement('div'), {
-    style: 'position:fixed;inset:0;z-index:9999;pointer-events:none;overflow:hidden;',
-  });
-  document.body.appendChild(container);
-  for (let i = 0; i < 60; i++) {
-    const p = document.createElement('div');
-    const colors = ['#e9775c','#5b2f3b','#d9a3a8','#9fb7a3','#d9a85b','#b5a7d4'];
-    p.style.cssText = `position:absolute;width:6px;height:6px;border-radius:50%;
-      background:${colors[i % colors.length]};left:${Math.random()*100}%;top:-10px;
-      animation:palette-fall ${1+Math.random()}s ease-out ${Math.random()*0.5}s forwards;`;
-    container.appendChild(p);
-  }
-  if (!document.getElementById('celebrate-style')) {
-    const s = document.createElement('style');
-    s.id = 'celebrate-style';
-    s.textContent = '@keyframes palette-fall{to{transform:translateY(100vh) rotate(720deg);opacity:0;}}';
-    document.head.appendChild(s);
-  }
-  setTimeout(() => container.remove(), 3000);
+  const flash = document.createElement('div');
+  flash.className = 'supernova-flash';
+  flash.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(flash);
+  setTimeout(() => flash.remove(), 2000);
 }
